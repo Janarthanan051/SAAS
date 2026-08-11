@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Device Location Tracker</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f5f7fa;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        h1 {
+            color: #2c5282;
+            text-align: center;
+            width: 100%;
+            margin-bottom: 30px;
+        }
+        
+        .input-group {
+            margin-bottom: 15px;
+        }
+        
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #cbd5e0;
+            border-radius: 6px;
+            margin-top: 5px;
+            font-size: 16px;
+        }
+        
+        button {
+            background: #4299e1;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            margin-top: 10px;
+        }
+        
+        button:hover {
+            background: #3182ce;
+        }
+        
+        #map {
+            height: 400px;
+            width: 100%;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        
+        .info-box {
+            background: #ebf8ff;
+            border-left: 4px solid #4299e1;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+        
+        .accuracy-meter {
+            margin: 15px 0;
+            padding: 10px;
+            background: #e6fffa;
+            border-radius: 6px;
+            border-left: 4px solid #38b2ac;
+        }
+        
+        .data-grid {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 8px;
+            margin: 15px 0;
+        }
+        
+        .data-label {
+            font-weight: bold;
+            color: #4a5568;
+        }
+        
+        .data-value {
+            color: #2d3748;
+        }
+        
+        .confidence {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 14px;
+            margin-left: 8px;
+        }
+        
+        .high {
+            background: #c6f6d5;
+            color: #22543d;
+        }
+        
+        .medium {
+            background: #fefcbf;
+            color: #744210;
+        }
+        
+        .low {
+            background: #fed7d7;
+            color: #822727;
+        }
+        
+        .result-box {
+            display: none;
+        }
+        
+        .error {
+            color: #e53e3e;
+            background: #fff5f5;
+            padding: 10px;
+            border-radius: 6px;
+            margin-top: 10px;
+        }
+        
+        .success {
+            color: #2f855a;
+            background: #f0fff4;
+            padding: 10px;
+            border-radius: 6px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Advanced Device Location Tracker</h1>
+        
+        <div class="card">
+            <h2>Device Information</h2>
+            <div class="info-box">
+                <p>This tool combines multiple data sources for accurate location tracking:</p>
+                <ul>
+                    <li>GPS/Browser Geolocation (most accurate)</li>
+                    <li>Mobile Network Location Data</li>
+                    <li>IP Address Geolocation</li>
+                    <li>Telecom Operator Information</li>
+                </ul>
+            </div>
+            
+            <div class="input-group">
+                <label for="phone">Mobile Number:</label>
+                <input type="tel" id="phone" placeholder="+91 XXXXX XXXXX" />
+            </div>
+            
+            <button onclick="startTracking()">Track Location</button>
+            
+            <div class="accuracy-meter">
+                <h3>Location Accuracy</h3>
+                <div id="accuracy-indicator"></div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2>Location Details</h2>
+            <div class="data-grid" id="location-details">
+                <!-- Will be populated by JavaScript -->
+            </div>
+            <div id="map"></div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        let map;
+        let marker;
+        let locationData = {};
+        
+        function validateIndianPhone(phone) {
+            const regex = /^\+91[6-9]\d{9}$/;
+            return regex.test(phone.replace(/\s/g, ''));
+        }
+        
+        // Initialize map
+        function initMap() {
+            map = L.map('map').setView([20.5937, 78.9629], 4);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(map);
+        }
+        
+        async function getIPLocation() {
+            try {
+                const response = await fetch('/api/lookup/ip');
+                return await response.json();
+            } catch (error) {
+                console.error('IP lookup failed:', error);
+                return null;
+            }
+        }
+        
+        async function getPhoneLocation(phone) {
+            if (!validateIndianPhone(phone)) {
+                throw new Error('Please enter a valid Indian mobile number (+91 followed by 10 digits)');
+            }
+            try {
+                const response = await fetch(`/api/lookup/phone?number=${encodeURIComponent(phone)}`);
+                return await response.json();
+            } catch (error) {
+                console.error('Phone lookup failed:', error);
+                return null;
+            }
+        }
+        
+        function getBrowserLocation() {
+            return new Promise((resolve, reject) => {
+                if (!navigator.geolocation) {
+                    reject(new Error('Geolocation not supported'));
+                    return;
+                }
+                
+                navigator.geolocation.getCurrentPosition(
+                    position => resolve(position),
+                    error => reject(error),
+                    { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+                );
+            });
+        }
+        
+        function updateLocationDetails(data) {
+            const details = document.getElementById('location-details');
+            details.innerHTML = '';
+            
+            const addDetail = (label, value, confidence) => {
+                if (!value) return;
+                const row = document.createElement('div');
+                row.innerHTML = `
+                    <span class="data-label">${label}:</span>
+                    <span class="data-value">
+                        ${value}
+                        ${confidence ? `<span class="confidence ${confidence}">${confidence}</span>` : ''}
+                    </span>
+                `;
+                details.appendChild(row);
+            };
+            
+            // Device & Network Info
+            if (data.ip) {
+                addDetail('IP Address', data.ip.query || data.ip.ip);
+                addDetail('ISP', data.ip.isp, 'high');
+                addDetail('Network', data.ip.as, 'medium');
+            }
+            
+            // Phone Details
+            if (data.phone) {
+                addDetail('Phone', data.phone.nationalNumber);
+                addDetail('Operator', data.phone.locationInfo?.operator, 'high');
+            }
+            
+            // Location Details
+            if (data.location) {
+                addDetail('Country', data.location.country, 'high');
+                addDetail('State', data.location.state || data.location.region, 'high');
+                addDetail('City', data.location.city || data.location.district, 'high');
+                if (data.location.village) {
+                    addDetail('Area/Village', data.location.village, 'medium');
+                }
+                if (data.location.accuracy) {
+                    addDetail('GPS Accuracy', `${Math.round(data.location.accuracy)}m`, 
+                        data.location.accuracy < 100 ? 'high' : 'medium');
+                }
+            }
+        }
+        
+        function updateMap(lat, lon, zoom = 13) {
+            if (!map) {
+                initMap();
+            }
+            
+            if (marker) {
+                map.removeLayer(marker);
+            }
+            
+            map.setView([lat, lon], zoom);
+            marker = L.marker([lat, lon]).addTo(map);
+        }
+        
+        async function startTracking() {
+            const phone = document.getElementById('phone').value;
+            locationData = {};
+            
+            try {
+                // Get IP location
+                const ipData = await getIPLocation();
+                if (ipData) {
+                    locationData.ip = ipData;
+                }
+                
+                // Get phone location if provided
+                if (phone) {
+                    const phoneData = await getPhoneLocation(phone);
+                    if (phoneData?.locationInfo) {
+                        locationData.phone = phoneData;
+                    }
+                }
+                
+                // Try browser geolocation
+                try {
+                    const browserLocation = await getBrowserLocation();
+                    locationData.browser = {
+                        coords: browserLocation.coords
+                    };
+                } catch (error) {
+                    console.log('Browser geolocation failed:', error);
+                }
+                
+                // Combine all location data for most accurate result
+                const location = {
+                    country: locationData.phone?.locationInfo?.country || locationData.ip?.country || 'Unknown',
+                    state: locationData.phone?.locationInfo?.state || locationData.ip?.regionName || 'Unknown',
+                    city: locationData.phone?.locationInfo?.district || locationData.ip?.city || 'Unknown',
+                    village: locationData.phone?.locationInfo?.village || null,
+                    accuracy: locationData.browser?.coords?.accuracy || 1000
+                };
+                
+                let lat, lon;
+                if (locationData.browser?.coords) {
+                    // Use high-accuracy browser location if available
+                    lat = locationData.browser.coords.latitude;
+                    lon = locationData.browser.coords.longitude;
+                } else if (locationData.phone?.locationInfo?.coordinates) {
+                    // Fall back to phone location
+                    lat = locationData.phone.locationInfo.coordinates.lat;
+                    lon = locationData.phone.locationInfo.coordinates.lon;
+                } else if (locationData.ip) {
+                    // Last resort: IP location
+                    lat = locationData.ip.lat;
+                    lon = locationData.ip.lon;
+                }
+                
+                if (lat && lon) {
+                    updateMap(lat, lon);
+                }
+                
+                locationData.location = location;
+                updateLocationDetails(locationData);
+                
+                // Update accuracy indicator
+                const accuracyIndicator = document.getElementById('accuracy-indicator');
+                if (locationData.browser?.coords) {
+                    accuracyIndicator.innerHTML = `
+                        <span class="confidence high">High Accuracy (GPS)</span>
+                        <p>Location accuracy: ${Math.round(locationData.browser.coords.accuracy)}m</p>
+                    `;
+                } else if (locationData.phone?.locationInfo) {
+                    accuracyIndicator.innerHTML = `
+                        <span class="confidence medium">Medium Accuracy (Phone)</span>
+                        <p>Area level accuracy based on mobile network</p>
+                    `;
+                } else {
+                    accuracyIndicator.innerHTML = `
+                        <span class="confidence low">Low Accuracy (IP)</span>
+                        <p>City level accuracy based on IP address</p>
+                    `;
+                }
+            } catch (error) {
+                document.getElementById('location-details').innerHTML = `
+                    <div class="error">
+                        Error: ${error.message}
+                    </div>
+                `;
+            }
+        }
+        
+        // Initialize map on page load
+        initMap();
+    </script>
+</body>
+</html>

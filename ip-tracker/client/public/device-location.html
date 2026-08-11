@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Device Location Tracker</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f5f7fa;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        h1 {
+            color: #2c5282;
+            text-align: center;
+            width: 100%;
+            margin-bottom: 30px;
+        }
+        
+        .input-group {
+            margin-bottom: 15px;
+        }
+        
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #cbd5e0;
+            border-radius: 6px;
+            margin-top: 5px;
+            font-size: 16px;
+        }
+        
+        button {
+            background: #4299e1;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            margin-top: 10px;
+        }
+        
+        button:hover {
+            background: #3182ce;
+        }
+        
+        #map {
+            height: 400px;
+            width: 100%;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        
+        .info-box {
+            background: #ebf8ff;
+            border-left: 4px solid #4299e1;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+        
+        .accuracy-meter {
+            margin: 15px 0;
+            padding: 10px;
+            background: #e6fffa;
+            border-radius: 6px;
+            border-left: 4px solid #38b2ac;
+        }
+        
+        .data-grid {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 8px;
+            margin: 15px 0;
+        }
+        
+        .data-label {
+            font-weight: bold;
+            color: #4a5568;
+        }
+        
+        .data-value {
+            color: #2d3748;
+        }
+        
+        .confidence {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 14px;
+            margin-left: 8px;
+        }
+        
+        .high {
+            background: #c6f6d5;
+            color: #22543d;
+        }
+        
+        .medium {
+            background: #fefcbf;
+            color: #744210;
+        }
+        
+        .low {
+            background: #fed7d7;
+            color: #822727;
+        }
+        
+        .result-box {
+            display: none;
+        }
+        
+        .error {
+            color: #e53e3e;
+            background: #fff5f5;
+            padding: 10px;
+            border-radius: 6px;
+            margin-top: 10px;
+        }
+        
+        .success {
+            color: #2f855a;
+            background: #f0fff4;
+            padding: 10px;
+            border-radius: 6px;
+            margin-top: 10px;
+        }
+
+        .status-box {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .status-box.success {
+            background: #f0fff4;
+            border: 1px solid #9ae6b4;
+        }
+
+        .status-box.error {
+            background: #fff5f5;
+            border: 1px solid #feb2b2;
+        }
+
+        .status-box.pending {
+            background: #ebf8ff;
+            border: 1px solid #90cdf4;
+            color: #2b6cb0;
+        }
+
+        .input-help {
+            font-size: 14px;
+            color: #718096;
+            margin: 4px 0 0;
+        }
+
+        .primary-button {
+            background: #4299e1;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            transition: background-color 0.2s;
+        }
+
+        .primary-button:hover {
+            background: #3182ce;
+        }
+
+        .primary-button:disabled {
+            background: #a0aec0;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Advanced Device Location Tracker</h1>
+        
+        <div class="card">
+            <h2>Device Information</h2>
+            <div class="info-box">
+                <p>Send a location request SMS to get precise location:</p>
+                <ul>
+                    <li>Sends an SMS with a secure location sharing link</li>
+                    <li>Recipient can choose to share their location</li>
+                    <li>Real-time location tracking when shared</li>
+                    <li>Privacy-focused: Requires user consent</li>
+                </ul>
+            </div>
+            
+            <div class="input-group">
+                <label for="phone">Mobile Number to Track:</label>
+                <input type="tel" id="phone" placeholder="+91 XXXXX XXXXX" />
+                <p class="input-help">Enter the number you want to track</p>
+            </div>
+            
+            <button onclick="handleSingleButtonClick()" class="primary-button" id="actionButton">Track Location</button>
+            
+            <div id="request-status" class="status-box" style="display: none;"></div>
+            
+            <div class="accuracy-meter">
+                <h3>Location Accuracy</h3>
+                <div id="accuracy-indicator"></div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2>Location Details</h2>
+            <div class="data-grid" id="location-details">
+                <!-- Will be populated by JavaScript -->
+            </div>
+            <div id="map"></div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        let map;
+        let marker;
+        let locationData = {};
+        let trackingInterval;
+        let isRequestPending = false;
+        
+        async function handleSingleButtonClick() {
+            const button = document.getElementById('actionButton');
+            const phone = document.getElementById('phone').value.trim();
+
+            if (!isRequestPending) {
+                // First click - Send SMS
+                if (!validateIndianPhone(phone)) {
+                    alert('⚠️ Please enter a valid Indian mobile number (+91 followed by 10 digits)');
+                    return;
+                }
+
+                // First pop-up: Initial warning about real SMS
+                if (confirm('⚠️ Important Notice:\n\nThis will send a real SMS message to the provided number.\nStandard SMS rates may apply.\n\nDo you want to continue?')) {
+                    // Second pop-up: Final confirmation with phone number
+                    if (confirm(`📱 Final Confirmation\n\nSending SMS to: ${phone}\n\nClick OK to send the message`)) {
+                        button.disabled = true;
+                        isRequestPending = true;
+                        button.textContent = 'Sending SMS...';
+
+                        try {
+                            const response = await fetch(`${API_BASE_URL}/api/request-location`, {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify({ number: phone })
+                            });
+                            
+                            const data = await response.json();
+                            
+                            if (data.success) {
+                                alert('✅ SMS Sent Successfully!\n\n• A text message has been sent to: ' + phone + '\n• The message contains a location sharing link\n• Waiting for recipient response...');
+                                button.textContent = 'Waiting for Response...';
+                                showStatus(`Location request SMS sent successfully! Waiting for response...`, 'success');
+                                startLocationPolling(data.trackingId);
+                            } else {
+                                alert(`❌ SMS Failed!\n\nError: ${data.error}\n\nPlease check:\n• Your internet connection\n• The phone number format\n• Server status`);
+                                button.disabled = false;
+                                isRequestPending = false;
+                                button.textContent = 'Track Location';
+                                showStatus(`Failed to send location request: ${data.error}`, 'error');
+                            }
+                        } catch (error) {
+                            alert(`❌ Connection Error!\n\n${error.message}\n\nPlease check your internet connection and try again.`);
+                            button.disabled = false;
+                            isRequestPending = false;
+                            button.textContent = 'Track Location';
+                            showStatus(`Error: ${error.message}`, 'error');
+                        }
+                    } else {
+                        // User cancelled at second confirmation
+                        alert('❌ Operation cancelled. No SMS was sent.');
+                    }
+                } else {
+                    // User cancelled at first confirmation
+                    alert('❌ Operation cancelled. No SMS was sent.');
+                }
+            }
+                    }
+                }
+            }
+        }
+
+        function validateIndianPhone(phone) {
+            const regex = /^\+91[6-9]\d{9}$/;
+            return regex.test(phone.replace(/\s/g, ''));
+        }
+        
+        function showStatus(message, type = 'pending') {
+            const statusBox = document.getElementById('request-status');
+            statusBox.className = `status-box ${type}`;
+            statusBox.style.display = 'block';
+            statusBox.innerHTML = message;
+        }
+        
+        // Initialize map on page load
+        initMap();
+        
+        function startLocationPolling(trackingId) {
+            const button = document.getElementById('actionButton');
+            
+            // Clear any existing polling
+            if (trackingInterval) {
+                clearInterval(trackingInterval);
+            }
+            
+            // Poll for location updates every 5 seconds
+            trackingInterval = setInterval(async () => {
+                try {
+                    const response = await fetch(`${API_BASE_URL}/api/location-status/${trackingId}`);
+                    const data = await response.json();
+                    
+                    if (data.status === 'shared') {
+                        clearInterval(trackingInterval);
+                        alert('✅ Location Received!\n\nThe user has shared their location.');
+                        showStatus('Location received!', 'success');
+                        updateLocationDisplay(data.location);
+                        button.disabled = false;
+                        isRequestPending = false;
+                        button.textContent = 'Track Location';
+                    } else if (data.status === 'denied') {
+                        clearInterval(trackingInterval);
+                        alert('❌ Location Denied\n\nThe user has declined to share their location.');
+                        showStatus('Location request was denied by the user', 'error');
+                        button.disabled = false;
+                        isRequestPending = false;
+                        button.textContent = 'Track Location';
+                    }
+                } catch (error) {
+                    console.error('Polling error:', error);
+                }
+            }, 5000);
+            
+            // Stop polling after 5 minutes
+            setTimeout(() => {
+                if (trackingInterval) {
+                    clearInterval(trackingInterval);
+                    showStatus('Location request expired. Please try again.', 'error');
+                }
+            }, 5 * 60 * 1000);
+        }
+        
+        // Initialize map
+        function initMap() {
+            map = L.map('map').setView([20.5937, 78.9629], 4);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(map);
+        }
+        
+        // API base URL - adjust this based on your server configuration
+        const API_BASE_URL = 'http://localhost:3000';
+
+        async function getIPLocation() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/lookup/ip`);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return await response.json();
+            } catch (error) {
+                console.error('IP lookup failed:', error);
+                showStatus(`Connection error: Make sure the server is running on port 3000`, 'error');
+                return null;
+            }
+        }
+        
+        async function getPhoneLocation(phone) {
+            if (!validateIndianPhone(phone)) {
+                throw new Error('Please enter a valid Indian mobile number (+91 followed by 10 digits)');
+            }
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/lookup/phone?number=${encodeURIComponent(phone)}`);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return await response.json();
+            } catch (error) {
+                console.error('Phone lookup failed:', error);
+                showStatus(`Connection error: Make sure the server is running on port 3000`, 'error');
+                return null;
+            }
+        }
+        
+        function getBrowserLocation() {
+            return new Promise((resolve, reject) => {
+                if (!navigator.geolocation) {
+                    reject(new Error('Geolocation not supported'));
+                    return;
+                }
+                
+                navigator.geolocation.getCurrentPosition(
+                    position => resolve(position),
+                    error => reject(error),
+                    { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+                );
+            });
+        }
+        
+        function updateLocationDetails(data) {
+            const details = document.getElementById('location-details');
+            details.innerHTML = '';
+            
+            const addDetail = (label, value, confidence) => {
+                if (!value) return;
+                const row = document.createElement('div');
+                row.innerHTML = `
+                    <span class="data-label">${label}:</span>
+                    <span class="data-value">
+                        ${value}
+                        ${confidence ? `<span class="confidence ${confidence}">${confidence}</span>` : ''}
+                    </span>
+                `;
+                details.appendChild(row);
+            };
+            
+            // Device & Network Info
+            if (data.ip) {
+                addDetail('IP Address', data.ip.query || data.ip.ip);
+                addDetail('ISP', data.ip.isp, 'high');
+                addDetail('Network', data.ip.as, 'medium');
+            }
+            
+            // Phone Details
+            if (data.phone) {
+                addDetail('Phone', data.phone.nationalNumber);
+                addDetail('Operator', data.phone.locationInfo?.operator, 'high');
+            }
+            
+            // Location Details
+            if (data.location) {
+                addDetail('Country', data.location.country, 'high');
+                addDetail('State', data.location.state || data.location.region, 'high');
+                addDetail('City', data.location.city || data.location.district, 'high');
+                if (data.location.village) {
+                    addDetail('Area/Village', data.location.village, 'medium');
+                }
+                if (data.location.accuracy) {
+                    addDetail('GPS Accuracy', `${Math.round(data.location.accuracy)}m`, 
+                        data.location.accuracy < 100 ? 'high' : 'medium');
+                }
+            }
+        }
+        
+        function updateMap(lat, lon, zoom = 13) {
+            if (!map) {
+                initMap();
+            }
+            
+            if (marker) {
+                map.removeLayer(marker);
+            }
+            
+            map.setView([lat, lon], zoom);
+            marker = L.marker([lat, lon]).addTo(map);
+        }
+        
+        async function startTracking() {
+            const phone = document.getElementById('phone').value;
+            locationData = {};
+            
+            try {
+                // Get IP location
+                const ipData = await getIPLocation();
+                if (ipData) {
+                    locationData.ip = ipData;
+                }
+                
+                // Get phone location if provided
+                if (phone) {
+                    const phoneData = await getPhoneLocation(phone);
+                    if (phoneData?.locationInfo) {
+                        locationData.phone = phoneData;
+                    }
+                }
+                
+                // Try browser geolocation
+                try {
+                    const browserLocation = await getBrowserLocation();
+                    locationData.browser = {
+                        coords: browserLocation.coords
+                    };
+                } catch (error) {
+                    console.log('Browser geolocation failed:', error);
+                }
+                
+                // Combine all location data for most accurate result
+                const location = {
+                    country: locationData.phone?.locationInfo?.country || locationData.ip?.country || 'Unknown',
+                    state: locationData.phone?.locationInfo?.state || locationData.ip?.regionName || 'Unknown',
+                    city: locationData.phone?.locationInfo?.district || locationData.ip?.city || 'Unknown',
+                    village: locationData.phone?.locationInfo?.village || null,
+                    accuracy: locationData.browser?.coords?.accuracy || 1000
+                };
+                
+                let lat, lon;
+                if (locationData.browser?.coords) {
+                    // Use high-accuracy browser location if available
+                    lat = locationData.browser.coords.latitude;
+                    lon = locationData.browser.coords.longitude;
+                } else if (locationData.phone?.locationInfo?.coordinates) {
+                    // Fall back to phone location
+                    lat = locationData.phone.locationInfo.coordinates.lat;
+                    lon = locationData.phone.locationInfo.coordinates.lon;
+                } else if (locationData.ip) {
+                    // Last resort: IP location
+                    lat = locationData.ip.lat;
+                    lon = locationData.ip.lon;
+                }
+                
+                if (lat && lon) {
+                    updateMap(lat, lon);
+                }
+                
+                locationData.location = location;
+                updateLocationDetails(locationData);
+                
+                // Update accuracy indicator
+                const accuracyIndicator = document.getElementById('accuracy-indicator');
+                if (locationData.browser?.coords) {
+                    accuracyIndicator.innerHTML = `
+                        <span class="confidence high">High Accuracy (GPS)</span>
+                        <p>Location accuracy: ${Math.round(locationData.browser.coords.accuracy)}m</p>
+                    `;
+                } else if (locationData.phone?.locationInfo) {
+                    accuracyIndicator.innerHTML = `
+                        <span class="confidence medium">Medium Accuracy (Phone)</span>
+                        <p>Area level accuracy based on mobile network</p>
+                    `;
+                } else {
+                    accuracyIndicator.innerHTML = `
+                        <span class="confidence low">Low Accuracy (IP)</span>
+                        <p>City level accuracy based on IP address</p>
+                    `;
+                }
+            } catch (error) {
+                document.getElementById('location-details').innerHTML = `
+                    <div class="error">
+                        Error: ${error.message}
+                    </div>
+                `;
+            }
+        }
+        
+        // Initialize map on page load
+        initMap();
+    </script>
+</body>
+</html>
