@@ -1,138 +1,143 @@
 import React, { useState } from 'react';
-import { Send, CheckCircle2, ChevronRight, Play, Star } from 'lucide-react';
+import { CheckCircle2, Play, Send } from 'lucide-react';
+
+const TESTIMONIALS = [
+  {
+    quote: 'I am very helped by this E-wallet application , my days are very easy to use this application and its very helpful in in my life , i recommend it to you 🌟',
+    name: 'John Richard',
+    role: 'Founder at TechFlow',
+    avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=80&q=80',
+  },
+  {
+    quote: 'Biccas has transformed how our remote team operates. Task management, cloud sync and live analytics in one clean dashboard!',
+    name: 'Sarah Jenkins',
+    role: 'VP of Product at Acme',
+    avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=80&q=80',
+  },
+  {
+    quote: 'The collaboration features are unmatched. Our productivity increased 40% in just 2 weeks of using Biccas.',
+    name: 'Marcus Williams',
+    role: 'CTO at FinTech Co',
+    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=80&q=80',
+  },
+  {
+    quote: 'Best SaaS tool we have ever used. The analytics alone are worth the price.',
+    name: 'Alicia Kim',
+    role: 'Head of Growth',
+    avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=80&q=80',
+  },
+];
 
 export default function ContactForm({ showToast }) {
+  const [idx, setIdx] = useState(0);
   const [email, setEmail] = useState('');
-  const [message, setMessage] = useState('');
-  const [submitted, setSubmitted] = useState(false);
+  const [msg, setMsg] = useState('');
+  const [done, setDone] = useState(false);
 
-  const testimonials = [
-    {
-      quote: "I am very helped by this E-wallet application, my days are very easy to use this application and its very helpful in my life, i recommend it to you 🌟",
-      name: "John Richard",
-      role: "Founder at TechFlow",
-      avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=200&q=80"
-    },
-    {
-      quote: "Biccas has transformed how our remote team operates. Task management, cloud sync and live analytics in one clean dashboard!",
-      name: "Sarah Jenkins",
-      role: "VP of Product at Acme",
-      avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80"
-    }
-  ];
-
-  const [activeTestimonial, setActiveTestimonial] = useState(0);
-
-  const handleSubmit = (e) => {
+  const submit = (e) => {
     e.preventDefault();
-    if (!email) {
-      showToast('Please enter your email address', 'error');
-      return;
-    }
-    setSubmitted(true);
-    showToast('Demo request submitted successfully!', 'success');
+    if (!email) { showToast('Please enter your email', 'error'); return; }
+    setDone(true);
+    showToast('Demo request submitted!', 'success');
   };
 
-  return (
-    <section id="contact" style={styles.section}>
-      <div className="container" style={styles.grid}>
-        {/* Left Side Testimonials */}
-        <div style={styles.leftCol}>
-          <h2 style={styles.heading}>
-            People are Saying <br />
-            About DoWithIt
-          </h2>
+  const t = TESTIMONIALS[idx];
 
-          <p style={styles.subtext}>
+  return (
+    <section id="contact" style={S.section}>
+      <div className="container" style={S.grid}>
+
+        {/* LEFT – testimonials */}
+        <div style={S.left}>
+          <h2 style={S.h2}>People are Saying<br />About DoWithIt</h2>
+          <p style={S.sub}>
             Everything you need to accept payment and grow your money or manage your business.
           </p>
 
-          <div style={styles.quoteMark}>“</div>
+          {/* Quote mark */}
+          <div style={S.quoteMark}>"</div>
 
-          <p style={styles.testimonialQuote}>
-            {testimonials[activeTestimonial].quote}
-          </p>
+          {/* Quote text */}
+          <p style={S.quoteText}>{t.quote}</p>
 
-          <div style={styles.authorRow}>
+          {/* Author + nav */}
+          <div style={S.authorRow}>
             <div>
-              <h4 style={styles.authorName}>{testimonials[activeTestimonial].name}</h4>
-              <p style={styles.authorRole}>{testimonials[activeTestimonial].role}</p>
+              <div style={S.authorName}>{t.name}</div>
+              <div style={S.authorRole}>{t.role}</div>
             </div>
-
-            <div style={styles.carouselNav}>
-              <div style={styles.avatarList}>
-                {testimonials.map((t, idx) => (
-                  <img 
-                    key={idx} 
-                    src={t.avatar} 
-                    alt={t.name}
-                    onClick={() => setActiveTestimonial(idx)}
+            <div style={S.navRow}>
+              {/* Avatar thumbnails */}
+              <div style={S.aviRow}>
+                {TESTIMONIALS.map((tv, i) => (
+                  <img
+                    key={i}
+                    src={tv.avatar}
+                    alt={tv.name}
+                    onClick={() => setIdx(i)}
                     style={{
-                      ...styles.avatarItem,
-                      ...(activeTestimonial === idx ? styles.avatarItemActive : {})
+                      ...S.avi,
+                      ...(i === idx ? S.aviActive : {}),
                     }}
                   />
                 ))}
               </div>
-              <button 
-                onClick={() => setActiveTestimonial((prev) => (prev + 1) % testimonials.length)}
-                style={styles.btnNext}
-                title="Next Testimonial"
+              {/* Next button */}
+              <button
+                onClick={() => setIdx((idx + 1) % TESTIMONIALS.length)}
+                style={S.btnNext}
               >
-                <Play size={14} fill="#FFFFFF" color="#FFFFFF" />
+                <Play size={11} fill="#fff" color="#fff" style={{ marginLeft: 2 }} />
               </button>
             </div>
           </div>
         </div>
 
-        {/* Right Side Dark Get Started Card Form */}
-        <div style={styles.rightCol}>
-          <div style={styles.darkCard}>
-            <div style={styles.cardIconBg}>
-              <Send size={24} color="#54BD95" />
+        {/* RIGHT – dark "Get Started" card */}
+        <div style={S.right}>
+          <div style={S.darkCard}>
+            {/* Green envelope icon */}
+            <div style={S.iconWrap}>
+              <Send size={20} color="#54BD95" />
             </div>
 
-            <h3 style={styles.cardTitle}>Get Started</h3>
+            <h3 style={S.cardTitle}>Get Started</h3>
 
-            {!submitted ? (
-              <form onSubmit={handleSubmit} style={styles.form}>
-                <div style={styles.formGroup}>
-                  <label style={styles.label}>Email</label>
-                  <input 
-                    type="email" 
-                    placeholder="Enter your email" 
+            {!done ? (
+              <form onSubmit={submit} style={S.form}>
+                <div style={S.group}>
+                  <label style={S.label}>Email</label>
+                  <input
+                    type="email"
+                    placeholder="Enter your email"
                     value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    style={styles.input}
+                    onChange={e => setEmail(e.target.value)}
+                    style={S.input}
                     required
                   />
                 </div>
-
-                <div style={styles.formGroup}>
-                  <label style={styles.label}>Message</label>
-                  <textarea 
-                    placeholder="What are you looking for?" 
-                    value={message}
-                    onChange={(e) => setMessage(e.target.value)}
-                    style={styles.textarea}
+                <div style={S.group}>
+                  <label style={S.label}>Message</label>
+                  <textarea
+                    placeholder="What are you looking for?"
+                    value={msg}
+                    onChange={e => setMsg(e.target.value)}
+                    style={S.textarea}
                     rows={4}
                   />
                 </div>
-
-                <button type="submit" style={styles.btnSubmit}>
-                  Request Demo
-                </button>
+                <button type="submit" style={S.btnSubmit}>Request Demo</button>
               </form>
             ) : (
-              <div style={styles.successBox}>
-                <CheckCircle2 size={48} color="#54BD95" />
-                <h4 style={styles.successTitle}>Thank You!</h4>
-                <p style={styles.successText}>
-                  Our product specialist will reach out to <strong>{email}</strong> within 15 minutes.
-                </p>
-                <button 
-                  onClick={() => { setSubmitted(false); setEmail(''); setMessage(''); }}
-                  style={styles.btnReset}
+              <div style={S.successBox}>
+                <CheckCircle2 size={44} color="#54BD95" />
+                <div style={S.successTitle}>Thank You!</div>
+                <div style={S.successMsg}>
+                  We'll reach out to <strong style={{ color: '#54BD95' }}>{email}</strong> shortly.
+                </div>
+                <button
+                  style={S.btnReset}
+                  onClick={() => { setDone(false); setEmail(''); setMsg(''); }}
                 >
                   Send another request
                 </button>
@@ -140,206 +145,112 @@ export default function ContactForm({ showToast }) {
             )}
           </div>
         </div>
+
       </div>
     </section>
   );
 }
 
-const styles = {
-  section: {
-    padding: '100px 0',
-    backgroundColor: '#192026',
-    color: '#FFFFFF',
-  },
+const S = {
+  section: { padding: '80px 0', background: '#192026' },
   grid: {
-    display: 'grid',
-    gridTemplateColumns: '1fr 1fr',
-    gap: '60px',
-    alignItems: 'center',
+    display: 'grid', gridTemplateColumns: '1fr 1fr',
+    gap: 60, alignItems: 'center',
   },
-  leftCol: {
-    maxWidth: '500px',
+  left: { maxWidth: 490 },
+  h2: {
+    fontFamily: "'Plus Jakarta Sans', sans-serif",
+    fontSize: 34, fontWeight: 800, color: '#fff',
+    lineHeight: 1.22, marginBottom: 14,
   },
-  heading: {
-    fontSize: '40px',
-    fontWeight: '800',
-    color: '#FFFFFF',
-    lineHeight: '1.2',
-    marginBottom: '20px',
-  },
-  subtext: {
-    fontSize: '15px',
-    color: '#A6A6A6',
-    lineHeight: '1.7',
-    marginBottom: '32px',
-  },
+  sub: { fontSize: 14, color: '#94A3B8', lineHeight: 1.75, marginBottom: 28 },
   quoteMark: {
-    fontSize: '60px',
-    color: '#54BD95',
-    lineHeight: '1',
-    marginBottom: '-20px',
-    fontFamily: 'serif',
+    fontSize: 60, color: '#54BD95', lineHeight: 1,
+    marginBottom: -12, fontFamily: 'Georgia, serif',
   },
-  testimonialQuote: {
-    fontSize: '18px',
-    color: '#E2E8F0',
-    lineHeight: '1.6',
-    marginBottom: '32px',
-    fontStyle: 'italic',
+  quoteText: {
+    fontSize: 16, color: '#CBD5E1', lineHeight: 1.68,
+    marginBottom: 28, fontStyle: 'italic',
   },
   authorRow: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    display: 'flex', justifyContent: 'space-between', alignItems: 'center',
   },
   authorName: {
-    fontSize: '18px',
-    fontWeight: '700',
-    color: '#FFFFFF',
+    fontFamily: "'Plus Jakarta Sans', sans-serif",
+    fontSize: 16, fontWeight: 700, color: '#fff', marginBottom: 3,
   },
-  authorRole: {
-    fontSize: '13px',
-    color: '#A6A6A6',
+  authorRole: { fontSize: 12, color: '#94A3B8' },
+  navRow: { display: 'flex', alignItems: 'center', gap: 12 },
+  aviRow: { display: 'flex', gap: 6 },
+  avi: {
+    width: 32, height: 32, borderRadius: '50%',
+    objectFit: 'cover', cursor: 'pointer',
+    opacity: 0.5, border: '2px solid transparent',
+    transition: 'all 0.2s',
   },
-  carouselNav: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '16px',
-  },
-  avatarList: {
-    display: 'flex',
-    gap: '8px',
-  },
-  avatarItem: {
-    width: '36px',
-    height: '36px',
-    borderRadius: '50%',
-    objectFit: 'cover',
-    cursor: 'pointer',
-    opacity: 0.5,
-    border: '2px solid transparent',
-    transition: 'all 0.2s ease',
-  },
-  avatarItemActive: {
-    opacity: 1,
-    borderColor: '#54BD95',
-    transform: 'scale(1.1)',
-  },
+  aviActive: { opacity: 1, borderColor: '#54BD95', transform: 'scale(1.08)' },
   btnNext: {
-    width: '36px',
-    height: '36px',
-    borderRadius: '50%',
-    backgroundColor: '#54BD95',
-    border: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    cursor: 'pointer',
+    width: 32, height: 32, borderRadius: '50%',
+    background: '#54BD95',
+    display: 'flex', alignItems: 'center', justifyContent: 'center',
   },
-  rightCol: {
-    display: 'flex',
-    justifyContent: 'center',
-  },
+  right: { display: 'flex', justifyContent: 'center' },
   darkCard: {
-    width: '100%',
-    maxWidth: '440px',
-    backgroundColor: '#222B32',
-    padding: '40px 36px',
-    borderRadius: '24px',
-    boxShadow: '0 25px 50px rgba(0,0,0,0.3)',
+    width: '100%', maxWidth: 420,
+    background: '#222B32',
+    borderRadius: 22, padding: '34px 30px',
+    boxShadow: '0 28px 60px rgba(0,0,0,0.38)',
     border: '1px solid rgba(255,255,255,0.05)',
   },
-  cardIconBg: {
-    width: '52px',
-    height: '52px',
-    borderRadius: '16px',
-    backgroundColor: 'rgba(84, 189, 149, 0.15)',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: '20px',
+  iconWrap: {
+    width: 48, height: 48, borderRadius: 14,
+    background: 'rgba(84,189,149,0.15)',
+    display: 'flex', alignItems: 'center', justifyContent: 'center',
+    marginBottom: 16,
   },
   cardTitle: {
-    fontSize: '26px',
-    fontWeight: '800',
-    color: '#FFFFFF',
-    marginBottom: '24px',
+    fontFamily: "'Plus Jakarta Sans', sans-serif",
+    fontSize: 22, fontWeight: 800, color: '#fff', marginBottom: 20,
   },
-  form: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '20px',
-  },
-  formGroup: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '8px',
-  },
+  form: { display: 'flex', flexDirection: 'column', gap: 16 },
+  group: { display: 'flex', flexDirection: 'column', gap: 7 },
   label: {
-    fontSize: '13px',
-    fontWeight: '600',
-    color: '#A6A6A6',
+    fontFamily: "'Inter', sans-serif",
+    fontSize: 12, fontWeight: 600, color: '#94A3B8',
   },
   input: {
-    width: '100%',
-    padding: '14px 16px',
-    borderRadius: '12px',
-    backgroundColor: '#192026',
-    border: '1px solid #334155',
-    color: '#FFFFFF',
-    fontSize: '14px',
-    outline: 'none',
+    width: '100%', padding: '12px 14px',
+    borderRadius: 10, background: '#192026',
+    border: '1px solid #2E3D4A', color: '#fff',
+    fontSize: 13, outline: 'none',
+    fontFamily: "'Inter', sans-serif",
   },
   textarea: {
-    width: '100%',
-    padding: '14px 16px',
-    borderRadius: '12px',
-    backgroundColor: '#192026',
-    border: '1px solid #334155',
-    color: '#FFFFFF',
-    fontSize: '14px',
-    outline: 'none',
-    resize: 'none',
+    width: '100%', padding: '12px 14px',
+    borderRadius: 10, background: '#192026',
+    border: '1px solid #2E3D4A', color: '#fff',
+    fontSize: 13, outline: 'none', resize: 'none',
+    fontFamily: "'Inter', sans-serif",
   },
   btnSubmit: {
-    width: '100%',
-    padding: '14px',
-    borderRadius: '999px',
-    backgroundColor: '#54BD95',
-    color: '#FFFFFF',
-    fontSize: '15px',
-    fontWeight: '700',
-    border: 'none',
-    cursor: 'pointer',
-    boxShadow: '0 8px 20px rgba(84, 189, 149, 0.3)',
-    marginTop: '10px',
+    width: '100%', padding: '13px',
+    borderRadius: 999, background: '#54BD95',
+    color: '#fff', fontSize: 14, fontWeight: 700,
+    boxShadow: '0 8px 22px rgba(84,189,149,0.28)',
+    marginTop: 4,
   },
   successBox: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    textAlign: 'center',
-    gap: '16px',
-    padding: '20px 0',
+    display: 'flex', flexDirection: 'column',
+    alignItems: 'center', textAlign: 'center', gap: 14, padding: '14px 0',
   },
   successTitle: {
-    fontSize: '22px',
-    fontWeight: '700',
-    color: '#FFFFFF',
+    fontFamily: "'Plus Jakarta Sans', sans-serif",
+    fontSize: 20, fontWeight: 800, color: '#fff',
   },
-  successText: {
-    fontSize: '14px',
-    color: '#A6A6A6',
-    lineHeight: '1.6',
-  },
+  successMsg: { fontSize: 13, color: '#94A3B8', lineHeight: 1.6 },
   btnReset: {
-    backgroundColor: 'transparent',
-    color: '#54BD95',
-    border: '1px solid #54BD95',
-    padding: '10px 20px',
-    borderRadius: '999px',
-    fontWeight: '600',
-    fontSize: '13px',
-    cursor: 'pointer',
-  }
+    background: 'none', color: '#54BD95',
+    border: '1px solid #54BD95', padding: '9px 20px',
+    borderRadius: 999, fontWeight: 600, fontSize: 13,
+  },
 };

@@ -1,10 +1,25 @@
 import React, { useState } from 'react';
-import { ArrowRight, Send } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
+
+const COLS = [
+  {
+    title: 'Support',
+    links: ['Help centre', 'Account information', 'About', 'Contact us'],
+  },
+  {
+    title: 'Helpful Links',
+    links: ['Terms & conditions', 'Privacy policy', 'Security', 'Status'],
+  },
+  {
+    title: 'Products',
+    links: ['Update', 'Security', 'Beta test', 'Pricing product'],
+  },
+];
 
 export default function Footer({ showToast }) {
   const [email, setEmail] = useState('');
 
-  const handleSubscribe = (e) => {
+  const handleSub = (e) => {
     e.preventDefault();
     if (!email) return;
     showToast('Subscribed to Biccas newsletter!', 'success');
@@ -12,68 +27,52 @@ export default function Footer({ showToast }) {
   };
 
   return (
-    <footer style={styles.footer}>
+    <footer style={S.footer}>
       <div className="container">
-        {/* Top Grid */}
-        <div style={styles.grid}>
-          {/* Brand & Newsletter Column */}
-          <div style={styles.brandCol}>
-            <a href="#" style={styles.logo}>
-              <span style={styles.logoText}>Biccas</span>
-              <span style={styles.logoDot}></span>
+        <div style={S.top}>
+
+          {/* Brand + newsletter */}
+          <div style={S.brand}>
+            <a href="#" style={S.logo}>
+              <span>Biccas</span>
+              <span style={S.dot} />
             </a>
-            <p style={styles.tagline}>
+            <p style={S.tagline}>
               Get started now try our product for free and scale your team.
             </p>
-
-            <form onSubmit={handleSubscribe} style={styles.newsletterForm}>
-              <input 
-                type="email" 
+            <form onSubmit={handleSub} style={S.form}>
+              <input
+                type="email"
                 placeholder="Enter your email here"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                style={styles.newsletterInput}
-                required
+                onChange={e => setEmail(e.target.value)}
+                style={S.input}
               />
-              <button type="submit" style={styles.newsletterBtn} title="Subscribe">
-                <ArrowRight size={18} color="#FFFFFF" />
+              <button type="submit" style={S.arrowBtn}>
+                <ArrowRight size={15} color="#fff" />
               </button>
             </form>
           </div>
 
-          {/* Links Columns */}
-          <div style={styles.linksCol}>
-            <h4 style={styles.linkHeader}>Support</h4>
-            <a href="#" style={styles.linkItem}>Help centre</a>
-            <a href="#" style={styles.linkItem}>Account information</a>
-            <a href="#benefits" style={styles.linkItem}>About</a>
-            <a href="#contact" style={styles.linkItem}>Contact us</a>
-          </div>
+          {/* Link columns */}
+          {COLS.map(col => (
+            <div key={col.title} style={S.col}>
+              <h4 style={S.colTitle}>{col.title}</h4>
+              {col.links.map(l => (
+                <a key={l} href="#" style={S.colLink}>{l}</a>
+              ))}
+            </div>
+          ))}
 
-          <div style={styles.linksCol}>
-            <h4 style={styles.linkHeader}>Helpful Links</h4>
-            <a href="#" style={styles.linkItem}>Terms & conditions</a>
-            <a href="#" style={styles.linkItem}>Privacy policy</a>
-            <a href="#" style={styles.linkItem}>Security</a>
-            <a href="#" style={styles.linkItem}>Status</a>
-          </div>
-
-          <div style={styles.linksCol}>
-            <h4 style={styles.linkHeader}>Products</h4>
-            <a href="#" style={styles.linkItem}>Update</a>
-            <a href="#" style={styles.linkItem}>Security</a>
-            <a href="#" style={styles.linkItem}>Beta test</a>
-            <a href="#pricing" style={styles.linkItem}>Pricing product</a>
-          </div>
         </div>
 
-        {/* Bottom Copyright Bar */}
-        <div style={styles.bottomBar}>
-          <p>© 2026 Biccas Inc. Copyright and rights reserved</p>
-          <div style={styles.bottomLinks}>
-            <a href="#">Terms and Conditions</a>
-            <span>•</span>
-            <a href="#">Privacy Policy</a>
+        {/* Bottom bar */}
+        <div style={S.bottom}>
+          <span style={S.copy}>© 2026 Biccas Inc. Copyright and rights reserved</span>
+          <div style={S.bottomLinks}>
+            <a href="#" style={S.bottomLink}>Terms and Conditions</a>
+            <span style={S.sep}>•</span>
+            <a href="#" style={S.bottomLink}>Privacy Policy</a>
           </div>
         </div>
       </div>
@@ -81,104 +80,57 @@ export default function Footer({ showToast }) {
   );
 }
 
-const styles = {
+const S = {
   footer: {
-    backgroundColor: '#192026',
-    color: '#A6A6A6',
-    padding: '80px 0 30px 0',
-    borderTop: '1px solid rgba(255,255,255,0.08)',
+    background: '#192026', color: '#A6A6A6',
+    padding: '64px 0 24px',
+    borderTop: '1px solid rgba(255,255,255,0.07)',
   },
-  grid: {
+  top: {
     display: 'grid',
-    gridTemplateColumns: '2fr 1fr 1fr 1fr',
-    gap: '60px',
-    marginBottom: '60px',
+    gridTemplateColumns: '1.8fr 1fr 1fr 1fr',
+    gap: 48, marginBottom: 48,
   },
-  brandCol: {
-    maxWidth: '340px',
-  },
+  brand: { maxWidth: 320 },
   logo: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '4px',
-    fontSize: '28px',
-    fontWeight: '800',
-    color: '#54BD95',
-    marginBottom: '16px',
+    display: 'inline-flex', alignItems: 'center', gap: 5,
+    fontFamily: "'Plus Jakarta Sans', sans-serif",
+    fontSize: 22, fontWeight: 800, color: '#54BD95',
+    marginBottom: 12, textDecoration: 'none',
   },
-  logoText: {
-    color: '#54BD95',
+  dot: {
+    display: 'inline-block', width: 7, height: 7,
+    background: '#54BD95', borderRadius: '50%', marginTop: 8,
   },
-  logoDot: {
-    width: '8px',
-    height: '8px',
-    backgroundColor: '#54BD95',
-    borderRadius: '50%',
-    display: 'inline-block',
-    marginTop: '10px',
+  tagline: { fontSize: 13, lineHeight: 1.68, marginBottom: 20 },
+  form: { position: 'relative', display: 'flex', alignItems: 'center' },
+  input: {
+    width: '100%', padding: '12px 46px 12px 18px',
+    borderRadius: 999, background: 'transparent',
+    border: '1px solid #2E3D4A', color: '#fff',
+    fontSize: 12, outline: 'none',
+    fontFamily: "'Inter', sans-serif",
   },
-  tagline: {
-    fontSize: '14px',
-    lineHeight: '1.6',
-    marginBottom: '24px',
+  arrowBtn: {
+    position: 'absolute', right: 5,
+    width: 34, height: 34, borderRadius: '50%',
+    background: '#54BD95',
+    display: 'flex', alignItems: 'center', justifyContent: 'center',
   },
-  newsletterForm: {
-    position: 'relative',
-    display: 'flex',
-    alignItems: 'center',
+  col: { display: 'flex', flexDirection: 'column', gap: 10 },
+  colTitle: {
+    fontFamily: "'Plus Jakarta Sans', sans-serif",
+    color: '#fff', fontSize: 14, fontWeight: 700, marginBottom: 4,
   },
-  newsletterInput: {
-    width: '100%',
-    padding: '14px 50px 14px 20px',
-    borderRadius: '999px',
-    backgroundColor: 'transparent',
-    border: '1px solid #334155',
-    color: '#FFFFFF',
-    fontSize: '13px',
-    outline: 'none',
+  colLink: { fontSize: 13, color: '#A6A6A6', textDecoration: 'none' },
+  bottom: {
+    display: 'flex', justifyContent: 'space-between',
+    alignItems: 'center', paddingTop: 22,
+    borderTop: '1px solid rgba(255,255,255,0.07)',
+    flexWrap: 'wrap', gap: 12,
   },
-  newsletterBtn: {
-    position: 'absolute',
-    right: '6px',
-    width: '36px',
-    height: '36px',
-    borderRadius: '50%',
-    backgroundColor: '#54BD95',
-    border: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    cursor: 'pointer',
-  },
-  linksCol: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '12px',
-  },
-  linkHeader: {
-    color: '#FFFFFF',
-    fontSize: '16px',
-    fontWeight: '700',
-    marginBottom: '8px',
-  },
-  linkItem: {
-    fontSize: '14px',
-    color: '#A6A6A6',
-    textDecoration: 'none',
-  },
-  bottomBar: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingTop: '30px',
-    borderTop: '1px solid rgba(255,255,255,0.08)',
-    fontSize: '13px',
-    flexWrap: 'wrap',
-    gap: '16px',
-  },
-  bottomLinks: {
-    display: 'flex',
-    gap: '12px',
-    alignItems: 'center',
-  }
+  copy: { fontSize: 12 },
+  bottomLinks: { display: 'flex', alignItems: 'center', gap: 8 },
+  bottomLink: { fontSize: 12, color: '#A6A6A6', textDecoration: 'none' },
+  sep: { fontSize: 12 },
 };

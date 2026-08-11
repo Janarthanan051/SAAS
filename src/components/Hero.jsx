@@ -1,128 +1,142 @@
-import React, { useState } from 'react';
-import { Play, Check, Coins, MessageSquare } from 'lucide-react';
+import React from 'react';
+import { Play, Check } from 'lucide-react';
 
 export default function Hero({ onOpenDashboard, onOpenVideoModal }) {
-  const [amount, setAmount] = useState('450..00');
-
   return (
-    <section id="home" style={styles.heroSection}>
-      <div className="container" style={styles.heroGrid}>
-        {/* Left Column Text & CTAs */}
-        <div style={styles.leftCol}>
-          <h1 style={styles.heading}>
-            We’re here to <br />
-            Increase your <br />
-            <span style={styles.productivityWrapper}>
+    <section id="home" style={S.section}>
+      <div className="container" style={S.grid}>
+
+        {/* ── LEFT ── */}
+        <div style={S.left}>
+          <h1 style={S.h1}>
+            We're here to<br />
+            Increase your<br />
+            <span style={S.highlight}>
               Productivity
-              {/* Exact Green Curved Underline SVG */}
-              <svg 
-                width="100%" 
-                height="16" 
-                viewBox="0 0 340 20" 
-                fill="none" 
+              {/* Exact curved green underline from reference */}
+              <svg
+                style={S.underlineSvg}
+                viewBox="0 0 340 16"
+                preserveAspectRatio="none"
+                fill="none"
                 xmlns="http://www.w3.org/2000/svg"
-                style={styles.greenUnderlineSvg}
               >
-                <path 
-                  d="M5 14 Q 170 2 335 14" 
-                  stroke="#54BD95" 
-                  strokeWidth="7" 
-                  strokeLinecap="round" 
+                <path
+                  d="M 4 11 Q 85 3 170 9 Q 255 15 336 7"
+                  stroke="#54BD95"
+                  strokeWidth="5"
+                  strokeLinecap="round"
+                  fill="none"
                 />
               </svg>
             </span>
           </h1>
 
-          <p style={styles.subtext}>
+          <p style={S.sub}>
             Let's make your work more organize and easily using the Taskio Dashboard with many of the latest featuresin managing work every day.
           </p>
 
-          <div style={styles.ctaGroup}>
-            <button 
-              onClick={onOpenDashboard} 
-              className="btn-primary"
-              style={styles.btnTryTrial}
-            >
-              Try free trial
-            </button>
-
-            <button 
-              onClick={onOpenVideoModal} 
-              style={styles.btnViewDemo}
-            >
-              <div style={styles.playCircleOutline}>
-                <Play size={14} fill="none" color="#192026" strokeWidth={2.5} />
-              </div>
-              <span style={styles.viewDemoText}>View Demo</span>
+          <div style={S.btnRow}>
+            <button onClick={onOpenDashboard} style={S.btnTrial}>Try free trial</button>
+            <button onClick={onOpenVideoModal} style={S.btnDemo}>
+              <span style={S.playCircle}>
+                <Play size={11} color="#192026" fill="none" strokeWidth={2.5} style={{ marginLeft: 2 }} />
+              </span>
+              <span style={S.demoLabel}>View Demo</span>
             </button>
           </div>
         </div>
 
-        {/* Right Column Visual Graphic */}
-        <div style={styles.rightCol}>
-          <div style={styles.heroGraphicWrapper}>
-            {/* Green Background Box with Line Accent */}
-            <div style={styles.greenBgShape}>
-              <svg width="100%" height="100%" viewBox="0 0 340 440" fill="none" style={styles.lineSvg}>
-                <path d="M20 80 Q100 20 180 90 T320 60 Q260 200 300 350" stroke="#46AA83" strokeWidth="2.5" fill="none" />
-                <path d="M40 220 Q120 160 220 280 T300 400" stroke="#46AA83" strokeWidth="2" fill="none" />
+        {/* ── RIGHT ── */}
+        <div style={S.right}>
+          <div style={S.graphic}>
+
+            {/* Green background rounded rectangle */}
+            <div style={S.greenBox}>
+              {/* Zig-zag / wave line inside green box */}
+              <svg style={S.waveSvg} viewBox="0 0 280 380" fill="none">
+                <polyline
+                  points="10,80 50,40 90,110 130,30 170,100 210,50 260,90"
+                  stroke="rgba(255,255,255,0.25)" strokeWidth="2.5"
+                  fill="none" strokeLinecap="round" strokeLinejoin="round"
+                />
+                <polyline
+                  points="10,160 60,120 100,200 140,130 180,190 230,150 270,180"
+                  stroke="rgba(255,255,255,0.18)" strokeWidth="2"
+                  fill="none" strokeLinecap="round" strokeLinejoin="round"
+                />
               </svg>
             </div>
 
-            {/* Person Photo */}
-            <img 
-              src="/hero_person.jpg" 
-              alt="Biccas Hero Professional" 
-              style={styles.personImage}
+            {/* Person image overlaid on green box */}
+            <img
+              src="/hero_person.jpg"
+              alt="Person"
+              style={S.personImg}
+              onError={e => {
+                e.target.style.display = 'none';
+              }}
             />
 
-            {/* Top Floating Card: Enter amount / Send */}
-            <div className="animate-float" style={styles.cardEnterAmount}>
-              <div style={styles.enterAmountLabel}>Enter amount</div>
-              <div style={styles.enterAmountRow}>
-                <span style={styles.enterAmountVal}>$450..00</span>
-                <button style={styles.btnSendPill}>Send</button>
+            {/* White card: Enter amount */}
+            <div className="float" style={S.cardAmount}>
+              <div style={S.amtLabel}>Enter amount</div>
+              <div style={S.amtRow}>
+                <span style={S.amtVal}>$450.00</span>
+                <button style={S.btnSend}>Send</button>
               </div>
             </div>
 
-            {/* Purple Check Floating Badge */}
-            <div style={styles.purpleCheckBadge}>
-              <Check size={14} color="#FFFFFF" strokeWidth={3} />
+            {/* Purple rounded-square checkmark */}
+            <div style={S.purpleCheck}>
+              <Check size={12} color="#fff" strokeWidth={3} />
             </div>
 
-            {/* Top Right Orange Coin Badge */}
-            <div style={styles.orangeCoinBadge}>
-              <Coins size={18} color="#FFFFFF" />
+            {/* Yellow/gold rounded-square icon top-right of green */}
+            <div style={S.yellowIcon}>
+              {/* document icon lines */}
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                <rect x="2" y="1" width="14" height="16" rx="2" fill="rgba(255,255,255,0.3)"/>
+                <rect x="4" y="5" width="10" height="1.5" rx="0.75" fill="white"/>
+                <rect x="4" y="8" width="8" height="1.5" rx="0.75" fill="white"/>
+                <rect x="4" y="11" width="6" height="1.5" rx="0.75" fill="white"/>
+              </svg>
             </div>
 
-            {/* Bottom Floating Card: Total Income $245.00 */}
-            <div className="animate-float-delayed" style={styles.cardTotalIncome}>
-              <div style={styles.incomeLabelText}>Total Income</div>
-              <div style={styles.incomeValueRow}>
-                <span style={styles.incomeValText}>$245.00</span>
-                <div style={styles.miniBarChartIcon}>
-                  <div style={{ ...styles.bar1, height: '8px' }}></div>
-                  <div style={{ ...styles.bar1, height: '14px', backgroundColor: '#54BD95' }}></div>
-                  <div style={{ ...styles.bar1, height: '10px' }}></div>
+            {/* White card: Total Income */}
+            <div className="float2" style={S.cardIncome}>
+              <div style={S.incomeLabel}>Total Income</div>
+              <div style={S.incomeRow}>
+                <span style={S.incomeVal}>$245.00</span>
+                {/* mini bar chart */}
+                <div style={S.miniChart}>
+                  <div style={{ ...S.bar, height: 7,  background: '#CBD5E1' }} />
+                  <div style={{ ...S.bar, height: 14, background: '#54BD95' }} />
+                  <div style={{ ...S.bar, height: 9,  background: '#CBD5E1' }} />
                 </div>
               </div>
             </div>
 
-            {/* Dark Credit Card Accent (Creadlit Crad) */}
-            <div style={styles.creditCardDark}>
-              <div style={styles.cardLogoCircles}>
-                <div style={styles.cCircle1}></div>
-                <div style={styles.cCircle2}></div>
+            {/* Dark card: Creadlit Crad */}
+            <div style={S.creditCard}>
+              {/* Mastercard-style overlapping circles */}
+              <div style={S.ccCircles}>
+                <div style={{ ...S.ccCirc, background: '#EF4444' }} />
+                <div style={{ ...S.ccCirc, background: '#F59E0B', marginLeft: -8 }} />
               </div>
-              <div style={styles.cardTitleText}>Creadlit Crad</div>
-              <div style={styles.cardNumberText}>•••• 1234</div>
-              <div style={styles.cardExpiryText}>09/25</div>
+              <div style={S.ccName}>Creadlit Crad</div>
+              <div style={S.ccNum}>●●●● 1234</div>
+              <div style={S.ccExp}>09/25</div>
             </div>
 
-            {/* Bottom Right Orange Chat Badge */}
-            <div style={styles.orangeChatBadge}>
-              <MessageSquare size={16} color="#FFFFFF" fill="#FFFFFF" />
+            {/* Orange chat bubble badge (bottom right of credit card area) */}
+            <div style={S.chatBadge}>
+              {/* chat bubble SVG */}
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="white">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+              </svg>
             </div>
+
           </div>
         </div>
       </div>
@@ -130,285 +144,193 @@ export default function Hero({ onOpenDashboard, onOpenVideoModal }) {
   );
 }
 
-const styles = {
-  heroSection: {
-    padding: '60px 0 90px 0',
-    background: 'linear-gradient(180deg, #EBF7F2 0%, #FFFFFF 100%)',
-    position: 'relative',
-    overflow: 'hidden',
+const S = {
+  section: {
+    background: 'linear-gradient(165deg, #E8F7F1 0%, #EFF9F5 40%, #ffffff 100%)',
+    padding: '52px 0 80px',
   },
-  heroGrid: {
+  grid: {
     display: 'grid',
-    gridTemplateColumns: '1.1fr 1fr',
-    gap: '40px',
-    alignItems: 'center',
+    gridTemplateColumns: '1fr 1fr',
+    gap: 48, alignItems: 'center',
   },
-  leftCol: {
-    maxWidth: '560px',
+  left: { maxWidth: 520 },
+  h1: {
+    fontFamily: "'Plus Jakarta Sans', sans-serif",
+    fontSize: 56, fontWeight: 800,
+    color: '#192026', lineHeight: 1.12,
+    letterSpacing: '-1.5px', marginBottom: 24,
   },
-  heading: {
-    fontSize: '60px',
-    fontWeight: '800',
-    color: '#192026',
-    letterSpacing: '-1.5px',
-    marginBottom: '28px',
-    lineHeight: '1.12',
+  highlight: {
+    position: 'relative', display: 'inline-block',
+    paddingBottom: 8,
   },
-  productivityWrapper: {
-    position: 'relative',
-    display: 'inline-block',
-    paddingBottom: '6px',
-  },
-  greenUnderlineSvg: {
+  underlineSvg: {
     position: 'absolute',
-    bottom: '-6px',
-    left: '0',
-    width: '100%',
+    bottom: -2, left: 0,
+    width: '100%', height: 16,
     pointerEvents: 'none',
   },
-  subtext: {
-    fontSize: '16px',
-    color: '#68717A',
-    lineHeight: '1.7',
-    marginBottom: '40px',
-    maxWidth: '480px',
-    fontWeight: '500',
+  sub: {
+    fontSize: 15, color: '#68717A',
+    lineHeight: 1.72, marginBottom: 36,
+    maxWidth: 440, fontWeight: 400,
   },
-  ctaGroup: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '24px',
-    flexWrap: 'wrap',
+  btnRow: { display: 'flex', alignItems: 'center', gap: 28 },
+  btnTrial: {
+    backgroundColor: '#54BD95', color: '#fff',
+    fontFamily: "'Inter', sans-serif",
+    fontWeight: 600, fontSize: 15,
+    padding: '14px 32px', borderRadius: 999,
+    boxShadow: '0 8px 24px rgba(84,189,149,0.34)',
   },
-  btnTryTrial: {
-    fontSize: '16px',
-    padding: '16px 36px',
-  },
-  btnViewDemo: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '12px',
+  btnDemo: {
+    display: 'flex', alignItems: 'center', gap: 12,
     background: 'none',
-    border: 'none',
-    cursor: 'pointer',
   },
-  playCircleOutline: {
-    width: '40px',
-    height: '40px',
+  playCircle: {
+    width: 42, height: 42,
     borderRadius: '50%',
-    border: '2px solid #192026',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#FFFFFF',
+    border: '1.5px solid #C0C8D0',
+    display: 'flex', alignItems: 'center', justifyContent: 'center',
+    background: '#fff',
+    flexShrink: 0,
   },
-  viewDemoText: {
-    fontSize: '15px',
-    fontWeight: '700',
-    color: '#192026',
+  demoLabel: {
+    fontFamily: "'Inter', sans-serif",
+    fontSize: 15, fontWeight: 600, color: '#192026',
   },
-  rightCol: {
-    display: 'flex',
-    justifyContent: 'center',
+
+  right: { display: 'flex', justifyContent: 'flex-end', alignItems: 'center' },
+  graphic: {
     position: 'relative',
+    width: 440, height: 500,
   },
-  heroGraphicWrapper: {
-    position: 'relative',
-    width: '450px',
-    height: '490px',
-  },
-  greenBgShape: {
+
+  /* Green background rounded box */
+  greenBox: {
     position: 'absolute',
-    top: '20px',
-    right: '20px',
-    width: '320px',
-    height: '420px',
-    backgroundColor: '#54BD95',
-    borderRadius: '32px',
-    zIndex: 1,
+    top: 20, right: 0,
+    width: 290, height: 430,
+    background: '#54BD95',
+    borderRadius: 28,
     overflow: 'hidden',
+    zIndex: 1,
   },
-  lineSvg: {
-    opacity: 0.4,
+  waveSvg: {
+    position: 'absolute', inset: 0, width: '100%', height: '100%',
   },
-  personImage: {
+
+  /* Person image */
+  personImg: {
     position: 'absolute',
-    bottom: '0',
-    right: '30px',
-    width: '330px',
-    height: '440px',
+    bottom: 0, right: 8,
+    width: 295, height: 445,
     objectFit: 'cover',
-    borderRadius: '30px',
+    borderRadius: 24,
     zIndex: 2,
   },
-  cardEnterAmount: {
+
+  /* Enter amount card (top-left) */
+  cardAmount: {
     position: 'absolute',
-    top: '30px',
-    left: '-20px',
-    backgroundColor: '#FFFFFF',
-    padding: '14px 18px',
-    borderRadius: '16px',
-    boxShadow: '0 20px 40px rgba(0, 0, 0, 0.08)',
+    top: 24, left: 0,
+    background: '#fff',
+    borderRadius: 14,
+    padding: '12px 16px',
+    boxShadow: '0 16px 40px rgba(0,0,0,0.10)',
     zIndex: 4,
-    minWidth: '220px',
+    minWidth: 200,
   },
-  enterAmountLabel: {
-    fontSize: '11px',
-    color: '#A6A6A6',
-    marginBottom: '6px',
+  amtLabel: { fontSize: 10, color: '#A6A6A6', marginBottom: 6, fontWeight: 500 },
+  amtRow: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 14 },
+  amtVal: {
+    fontFamily: "'Plus Jakarta Sans', sans-serif",
+    fontSize: 17, fontWeight: 800, color: '#192026',
   },
-  enterAmountRow: {
-    display: 'flex',
-    alignItems: 'center',
+  btnSend: {
+    background: '#54BD95', color: '#fff',
+    fontSize: 12, fontWeight: 700,
+    padding: '5px 14px', borderRadius: 999,
+    flexShrink: 0,
+  },
+
+  /* Purple check badge */
+  purpleCheck: {
+    position: 'absolute',
+    top: 195, left: 95,
+    width: 32, height: 32,
+    borderRadius: 9,
+    background: '#5A55CA',
+    display: 'flex', alignItems: 'center', justifyContent: 'center',
+    zIndex: 5,
+    boxShadow: '0 6px 18px rgba(90,85,202,0.4)',
+  },
+
+  /* Yellow icon (top right of green box) */
+  yellowIcon: {
+    position: 'absolute',
+    top: 20, right: -6,
+    width: 38, height: 38,
+    borderRadius: 10,
+    background: '#F59E0B',
+    display: 'flex', alignItems: 'center', justifyContent: 'center',
+    zIndex: 5,
+    boxShadow: '0 6px 16px rgba(245,158,11,0.38)',
+    transform: 'rotate(8deg)',
+  },
+
+  /* Total Income card (bottom-left) */
+  cardIncome: {
+    position: 'absolute',
+    bottom: 80, left: -10,
+    background: '#fff',
+    borderRadius: 14,
+    padding: '12px 16px',
+    boxShadow: '0 16px 40px rgba(0,0,0,0.10)',
+    zIndex: 4,
+    minWidth: 170,
+  },
+  incomeLabel: { fontSize: 10, color: '#A6A6A6', marginBottom: 4, fontWeight: 500 },
+  incomeRow: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10 },
+  incomeVal: {
+    fontFamily: "'Plus Jakarta Sans', sans-serif",
+    fontSize: 17, fontWeight: 800, color: '#192026',
+  },
+  miniChart: { display: 'flex', alignItems: 'flex-end', gap: 3 },
+  bar: { width: 4, borderRadius: 2 },
+
+  /* Credit card dark */
+  creditCard: {
+    position: 'absolute',
+    bottom: 52, right: -26,
+    width: 130, height: 130,
+    background: '#1C2530',
+    borderRadius: 16,
+    padding: '14px',
+    color: '#fff',
+    zIndex: 4,
+    boxShadow: '0 20px 44px rgba(0,0,0,0.35)',
+    transform: 'rotate(10deg)',
+    display: 'flex', flexDirection: 'column',
     justifyContent: 'space-between',
-    gap: '12px',
   },
-  enterAmountVal: {
-    fontSize: '17px',
-    fontWeight: '800',
-    color: '#192026',
-  },
-  btnSendPill: {
-    backgroundColor: '#54BD95',
-    color: '#FFFFFF',
-    fontSize: '12px',
-    fontWeight: '700',
-    padding: '6px 16px',
-    borderRadius: '999px',
-    border: 'none',
-  },
-  purpleCheckBadge: {
+  ccCircles: { display: 'flex' },
+  ccCirc: { width: 18, height: 18, borderRadius: '50%', opacity: 0.88 },
+  ccName: { fontSize: 9, color: '#94A3B8', fontWeight: 600, marginTop: 6 },
+  ccNum: { fontSize: 11, fontWeight: 700, letterSpacing: '0.5px' },
+  ccExp: { fontSize: 9, color: '#94A3B8', alignSelf: 'flex-end' },
+
+  /* Orange chat badge */
+  chatBadge: {
     position: 'absolute',
-    top: '180px',
-    left: '110px',
-    width: '32px',
-    height: '32px',
-    borderRadius: '10px',
-    backgroundColor: '#4F46E5',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    zIndex: 4,
-    boxShadow: '0 8px 20px rgba(79, 70, 229, 0.3)',
+    bottom: 36, right: 72,
+    width: 32, height: 32,
+    borderRadius: 9,
+    background: '#F97316',
+    display: 'flex', alignItems: 'center', justifyContent: 'center',
+    zIndex: 5,
+    boxShadow: '0 6px 16px rgba(249,115,22,0.40)',
     transform: 'rotate(-8deg)',
   },
-  orangeCoinBadge: {
-    position: 'absolute',
-    top: '30px',
-    right: '-10px',
-    width: '36px',
-    height: '36px',
-    borderRadius: '12px',
-    backgroundColor: '#F59E0B',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    zIndex: 4,
-    boxShadow: '0 8px 20px rgba(245, 158, 11, 0.3)',
-    transform: 'rotate(12deg)',
-  },
-  cardTotalIncome: {
-    position: 'absolute',
-    bottom: '70px',
-    left: '-30px',
-    backgroundColor: '#FFFFFF',
-    padding: '14px 18px',
-    borderRadius: '16px',
-    boxShadow: '0 20px 40px rgba(0, 0, 0, 0.1)',
-    zIndex: 4,
-    minWidth: '180px',
-  },
-  incomeLabelText: {
-    fontSize: '11px',
-    color: '#A6A6A6',
-    marginBottom: '4px',
-  },
-  incomeValueRow: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    gap: '10px',
-  },
-  incomeValText: {
-    fontSize: '17px',
-    fontWeight: '800',
-    color: '#192026',
-  },
-  miniBarChartIcon: {
-    display: 'flex',
-    alignItems: 'flex-end',
-    gap: '3px',
-  },
-  bar1: {
-    width: '4px',
-    backgroundColor: '#CBD5E1',
-    borderRadius: '2px',
-  },
-  creditCardDark: {
-    position: 'absolute',
-    bottom: '50px',
-    right: '-35px',
-    width: '140px',
-    height: '140px',
-    backgroundColor: '#1E252B',
-    borderRadius: '18px',
-    padding: '16px',
-    color: '#FFFFFF',
-    zIndex: 4,
-    boxShadow: '0 20px 40px rgba(0,0,0,0.3)',
-    transform: 'rotate(10deg)',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-  },
-  cardLogoCircles: {
-    display: 'flex',
-    gap: '-4px',
-  },
-  cCircle1: {
-    width: '20px',
-    height: '20px',
-    borderRadius: '50%',
-    backgroundColor: '#EF4444',
-    opacity: 0.8,
-  },
-  cCircle2: {
-    width: '20px',
-    height: '20px',
-    borderRadius: '50%',
-    backgroundColor: '#F59E0B',
-    opacity: 0.8,
-    marginLeft: '-8px',
-  },
-  cardTitleText: {
-    fontSize: '11px',
-    color: '#94A3B8',
-    fontWeight: '600',
-    marginTop: '12px',
-  },
-  cardNumberText: {
-    fontSize: '12px',
-    fontWeight: '700',
-    letterSpacing: '1px',
-  },
-  cardExpiryText: {
-    fontSize: '10px',
-    color: '#94A3B8',
-    alignSelf: 'flex-end',
-  },
-  orangeChatBadge: {
-    position: 'absolute',
-    bottom: '30px',
-    right: '80px',
-    width: '32px',
-    height: '32px',
-    borderRadius: '10px',
-    backgroundColor: '#F97316',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    zIndex: 4,
-    boxShadow: '0 8px 20px rgba(249, 115, 22, 0.3)',
-    transform: 'rotate(-10deg)',
-  }
 };

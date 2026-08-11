@@ -1,328 +1,183 @@
 import React, { useState } from 'react';
 import { Check } from 'lucide-react';
 
-export default function PricingSection({ onOpenAuth, onSelectPlan }) {
-  const [isYearly, setIsYearly] = useState(true);
+const PLANS = [
+  {
+    id: 'free', name: 'Free', price: 0,
+    desc: 'Have a go and see your app perform',
+    features: ['2 Users', '2GB Storage', 'Public Share & Comments', 'Chat Support', 'New updates outline'],
+    btn: 'Sign up for free', popular: false,
+  },
+  {
+    id: 'pro', name: 'Pro', price: 8,
+    desc: 'Experiment the power of professional automation',
+    badge: 'Save 20%',
+    features: ['4 Users', '10GB Storage', 'Public Share & Comments', 'Chat Support & Analytics', 'Advanced Security'],
+    btn: 'Go to Pro', popular: true,
+  },
+  {
+    id: 'business', name: 'Business', price: 16,
+    desc: 'Unleash maximum performance for teams',
+    features: ['10 Users & Manager', '100GB Cloud Storage', 'Direct Custom Domain', '24/7 Priority Support', 'Collaboration Teams'],
+    btn: 'Goto Business', popular: false,
+  },
+];
 
-  const plans = [
-    {
-      id: 'free',
-      name: 'Free',
-      desc: 'Have a go and see your app perform',
-      monthlyPrice: 0,
-      yearlyPrice: 0,
-      popular: false,
-      features: [
-        '2 Users',
-        '2GB Storage',
-        'Public Share & Comments',
-        'Chat Support',
-        'New updates outline'
-      ],
-      btnText: 'Sign up for free',
-      btnStyle: 'outline'
-    },
-    {
-      id: 'pro',
-      name: 'Pro',
-      desc: 'Experiment the power of professional automation',
-      monthlyPrice: 8,
-      yearlyPrice: 8,
-      popular: true,
-      badgeText: 'Save 20%',
-      features: [
-        '4 Users',
-        '10GB Storage',
-        'Public Share & Comments',
-        'Chat Support & Analytics',
-        'Advanced Security'
-      ],
-      btnText: 'Go to Pro',
-      btnStyle: 'primary'
-    },
-    {
-      id: 'business',
-      name: 'Business',
-      desc: 'Unleash maximum performance for teams',
-      monthlyPrice: 16,
-      yearlyPrice: 16,
-      popular: false,
-      features: [
-        '10 Users & Manager',
-        '100GB Cloud Storage',
-        'Direct Custom Domain',
-        '24/7 Priority Support',
-        'Collaboration Teams'
-      ],
-      btnText: 'Goto Business',
-      btnStyle: 'outline'
-    }
-  ];
+export default function PricingSection({ onSelectPlan }) {
+  const [yearly, setYearly] = useState(true);
 
   return (
-    <section id="pricing" style={styles.section}>
+    <section id="pricing" style={S.section}>
       <div className="container">
-        {/* Section Header */}
-        <div style={styles.header}>
-          <h2 style={styles.heading}>
-            Choose Plan <br />
-            That's Right For You
-          </h2>
-          <p style={styles.subtext}>
-            Choose plan that works best for you, feel free to contact us
-          </p>
 
-          {/* Monthly / Yearly Toggle */}
-          <div style={styles.toggleWrapper}>
-            <button 
-              onClick={() => setIsYearly(false)}
-              style={{
-                ...styles.toggleBtn,
-                ...(!isYearly ? styles.toggleBtnActive : {})
-              }}
-            >
-              Billed Monthly
-            </button>
-            <button 
-              onClick={() => setIsYearly(true)}
-              style={{
-                ...styles.toggleBtn,
-                ...(isYearly ? styles.toggleBtnActive : {})
-              }}
-            >
-              Billed Yearly
-            </button>
+        {/* Header */}
+        <div style={S.hdr}>
+          <h2 style={S.h2}>Choose Plan<br />That's Right For You</h2>
+          <p style={S.sub}>Choose plan that works best for you, feel free to contact us</p>
+
+          {/* Billed toggle */}
+          <div style={S.toggle}>
+            <button
+              style={!yearly ? S.toggleOn : S.toggleOff}
+              onClick={() => setYearly(false)}
+            >Billed Monthly</button>
+            <button
+              style={yearly ? S.toggleOn : S.toggleOff}
+              onClick={() => setYearly(true)}
+            >Billed Yearly</button>
           </div>
         </div>
 
-        {/* 3 Pricing Cards Grid */}
-        <div style={styles.grid}>
-          {plans.map((plan) => {
-            const price = isYearly ? plan.yearlyPrice : plan.monthlyPrice;
-            return (
-              <div 
-                key={plan.id}
-                style={{
-                  ...styles.card,
-                  ...(plan.popular ? styles.cardPopular : styles.cardStandard)
-                }}
-              >
-                {/* Save 20% Badge */}
-                {plan.badgeText && (
-                  <div style={styles.saveBadgeContainer}>
-                    <span style={styles.saveBadgeText}>{plan.badgeText}</span>
-                  </div>
-                )}
+        {/* Cards */}
+        <div style={S.grid}>
+          {PLANS.map(p => (
+            <div key={p.id} style={p.popular ? S.cardPop : S.cardStd}>
 
-                <h3 style={{
-                  ...styles.planName,
-                  color: plan.popular ? '#FFFFFF' : '#192026'
-                }}>{plan.name}</h3>
-
-                <p style={{
-                  ...styles.planDesc,
-                  color: plan.popular ? 'rgba(255,255,255,0.9)' : '#A6A6A6'
-                }}>{plan.desc}</p>
-
-                <div style={styles.priceRow}>
-                  <span style={{
-                    ...styles.currency,
-                    color: plan.popular ? '#FFFFFF' : '#192026'
-                  }}>$</span>
-                  <span style={{
-                    ...styles.priceValue,
-                    color: plan.popular ? '#FFFFFF' : '#192026'
-                  }}>{price}</span>
+              {/* Save badge */}
+              {p.badge && (
+                <div style={S.badgeRow}>
+                  <span style={S.badge}>{p.badge}</span>
                 </div>
+              )}
 
-                <div style={{
-                  ...styles.featuresBox,
-                  backgroundColor: plan.popular ? '#FFFFFF' : '#FAFCFB',
-                  boxShadow: plan.popular ? '0 10px 25px rgba(0,0,0,0.06)' : 'none',
-                  border: plan.popular ? 'none' : '1px solid #F0F4F8'
-                }}>
-                  {plan.features.map((feat, i) => (
-                    <div key={i} style={styles.featureItem}>
-                      <div style={styles.checkIcon}>
-                        <Check size={12} strokeWidth={3} />
-                      </div>
-                      <span style={styles.featureText}>{feat}</span>
-                    </div>
-                  ))}
+              <h3 style={{ ...S.planName, color: p.popular ? '#fff' : '#192026' }}>{p.name}</h3>
+              <p style={{ ...S.planDesc, color: p.popular ? 'rgba(255,255,255,0.85)' : '#A6A6A6' }}>{p.desc}</p>
 
-                  <button 
-                    onClick={() => onSelectPlan(plan)}
-                    style={styles.cardBtn}
-                  >
-                    {plan.btnText}
-                  </button>
-                </div>
+              <div style={S.priceRow}>
+                <span style={{ ...S.curr, color: p.popular ? '#fff' : '#192026' }}>$</span>
+                <span style={{ ...S.price, color: p.popular ? '#fff' : '#192026' }}>{p.price}</span>
               </div>
-            );
-          })}
+
+              {/* Feature list */}
+              <div style={{
+                ...S.featBox,
+                background: p.popular ? '#fff' : '#F8FBFA',
+                border: p.popular ? 'none' : '1px solid #EAEEF3',
+              }}>
+                {p.features.map((f, i) => (
+                  <div key={i} style={S.featRow}>
+                    <div style={S.checkCirc}>
+                      <Check size={10} strokeWidth={3} color="#fff" />
+                    </div>
+                    <span style={S.featText}>{f}</span>
+                  </div>
+                ))}
+                <button onClick={() => onSelectPlan(p)} style={S.cardBtn}>
+                  {p.btn}
+                </button>
+              </div>
+
+            </div>
+          ))}
         </div>
+
       </div>
     </section>
   );
 }
 
-const styles = {
-  section: {
-    padding: '100px 0',
-    backgroundColor: '#FFFFFF',
+const S = {
+  section: { padding: '80px 0', background: '#fff' },
+  hdr: { textAlign: 'center', maxWidth: 500, margin: '0 auto 52px' },
+  h2: {
+    fontFamily: "'Plus Jakarta Sans', sans-serif",
+    fontSize: 38, fontWeight: 800, color: '#192026',
+    lineHeight: 1.2, marginBottom: 12,
   },
-  header: {
-    textAlign: 'center',
-    maxWidth: '560px',
-    margin: '0 auto 60px auto',
+  sub: { fontSize: 14, color: '#A6A6A6', marginBottom: 26 },
+  toggle: {
+    display: 'inline-flex', background: '#F4F7F5',
+    padding: 5, borderRadius: 999, border: '1px solid #E2E8F0',
   },
-  heading: {
-    fontSize: '44px',
-    fontWeight: '800',
-    color: '#192026',
-    lineHeight: '1.2',
-    marginBottom: '16px',
+  toggleOn: {
+    padding: '9px 24px', borderRadius: 999,
+    fontSize: 13, fontWeight: 700,
+    background: '#54BD95', color: '#fff',
+    boxShadow: '0 4px 14px rgba(84,189,149,0.30)',
   },
-  subtext: {
-    fontSize: '15px',
-    color: '#A6A6A6',
-    marginBottom: '32px',
-  },
-  toggleWrapper: {
-    display: 'inline-flex',
-    backgroundColor: '#FAFCFB',
-    padding: '6px',
-    borderRadius: '999px',
-    border: '1px solid #E2E8F0',
-    boxShadow: '0 4px 12px rgba(0,0,0,0.03)',
-  },
-  toggleBtn: {
-    padding: '10px 24px',
-    borderRadius: '999px',
-    fontSize: '14px',
-    fontWeight: '600',
-    color: '#A6A6A6',
-    background: 'none',
-    cursor: 'pointer',
-  },
-  toggleBtnActive: {
-    backgroundColor: '#54BD95',
-    color: '#FFFFFF',
-    boxShadow: '0 4px 12px rgba(84, 189, 149, 0.3)',
+  toggleOff: {
+    padding: '9px 24px', borderRadius: 999,
+    fontSize: 13, fontWeight: 500,
+    background: 'none', color: '#A6A6A6',
   },
   grid: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(3, 1fr)',
-    gap: '32px',
-    alignItems: 'stretch',
+    display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)',
+    gap: 26, alignItems: 'start',
   },
-  cardStandard: {
-    backgroundColor: '#FFFFFF',
-    border: '1px solid #E2E8F0',
-    borderRadius: '24px',
-    padding: '36px 24px',
-    display: 'flex',
-    flexDirection: 'column',
-    position: 'relative',
-    transition: 'all 0.3s ease',
-    boxShadow: '0 10px 30px rgba(0,0,0,0.03)',
+  cardStd: {
+    background: '#fff', border: '1px solid #E2E8F0',
+    borderRadius: 22, padding: '28px 22px',
+    display: 'flex', flexDirection: 'column',
+    boxShadow: '0 4px 16px rgba(0,0,0,0.03)',
   },
-  cardPopular: {
-    backgroundColor: '#54BD95',
-    color: '#FFFFFF',
-    border: '1px solid #54BD95',
-    borderRadius: '24px',
-    padding: '36px 24px',
-    display: 'flex',
-    flexDirection: 'column',
-    position: 'relative',
-    transition: 'all 0.3s ease',
-    boxShadow: '0 20px 45px rgba(84, 189, 149, 0.35)',
-    transform: 'translateY(-6px)',
+  cardPop: {
+    background: '#54BD95',
+    borderRadius: 22, padding: '28px 22px',
+    display: 'flex', flexDirection: 'column',
+    boxShadow: '0 20px 50px rgba(84,189,149,0.42)',
+    transform: 'translateY(-8px)',
   },
-  saveBadgeContainer: {
-    textAlign: 'center',
-    marginBottom: '12px',
-  },
-  saveBadgeText: {
-    backgroundColor: '#FFFFFF',
-    color: '#54BD95',
-    fontSize: '11px',
-    fontWeight: '700',
-    padding: '4px 14px',
-    borderRadius: '20px',
+  badgeRow: { textAlign: 'center', marginBottom: 10 },
+  badge: {
+    background: '#fff', color: '#54BD95',
+    fontSize: 11, fontWeight: 800,
+    padding: '3px 14px', borderRadius: 20,
     display: 'inline-block',
-    boxShadow: '0 4px 10px rgba(0,0,0,0.1)',
   },
   planName: {
-    fontSize: '26px',
-    fontWeight: '800',
-    textAlign: 'center',
-    marginBottom: '6px',
+    fontFamily: "'Plus Jakarta Sans', sans-serif",
+    fontSize: 24, fontWeight: 800, textAlign: 'center', marginBottom: 5,
   },
-  planDesc: {
-    fontSize: '13px',
-    textAlign: 'center',
-    marginBottom: '24px',
-    minHeight: '36px',
-  },
+  planDesc: { fontSize: 12, textAlign: 'center', marginBottom: 18, lineHeight: 1.55, minHeight: 36 },
   priceRow: {
-    display: 'flex',
-    alignItems: 'flex-start',
-    justifyContent: 'center',
-    gap: '4px',
-    marginBottom: '24px',
+    display: 'flex', alignItems: 'flex-start',
+    justifyContent: 'center', gap: 2, marginBottom: 20,
   },
-  currency: {
-    fontSize: '20px',
-    fontWeight: '700',
-    marginTop: '6px',
+  curr: { fontSize: 18, fontWeight: 700, marginTop: 6 },
+  price: {
+    fontFamily: "'Plus Jakarta Sans', sans-serif",
+    fontSize: 54, fontWeight: 800, lineHeight: 1,
   },
-  priceValue: {
-    fontSize: '52px',
-    fontWeight: '800',
-    lineHeight: '1',
+  featBox: {
+    display: 'flex', flexDirection: 'column', gap: 12,
+    padding: '20px 16px', borderRadius: 16,
   },
-  featuresBox: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '14px',
-    padding: '24px 20px',
-    borderRadius: '20px',
-    flex: 1,
+  featRow: { display: 'flex', alignItems: 'center', gap: 11 },
+  checkCirc: {
+    width: 18, height: 18, borderRadius: '50%',
+    background: '#54BD95', flexShrink: 0,
+    display: 'flex', alignItems: 'center', justifyContent: 'center',
   },
-  featureItem: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '12px',
-    fontSize: '14px',
-  },
-  checkIcon: {
-    width: '20px',
-    height: '20px',
-    borderRadius: '50%',
-    backgroundColor: '#54BD95',
-    color: '#FFFFFF',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexShrink: 0,
-  },
-  featureText: {
-    fontWeight: '500',
-    color: '#192026',
+  featText: {
+    fontFamily: "'Inter', sans-serif",
+    fontSize: 13, fontWeight: 500, color: '#192026',
   },
   cardBtn: {
-    width: '100%',
-    padding: '14px',
-    borderRadius: '999px',
-    fontSize: '14px',
-    fontWeight: '700',
-    border: 'none',
-    cursor: 'pointer',
-    marginTop: '20px',
-    backgroundColor: '#54BD95',
-    color: '#FFFFFF',
-    boxShadow: '0 4px 14px rgba(84, 189, 149, 0.35)',
-  }
+    width: '100%', padding: '13px',
+    borderRadius: 999,
+    background: '#54BD95', color: '#fff',
+    fontSize: 14, fontWeight: 700,
+    boxShadow: '0 5px 16px rgba(84,189,149,0.32)',
+    marginTop: 12,
+  },
 };
