@@ -1,138 +1,161 @@
-import React, { useState, useEffect } from 'react';
-import Navbar from './components/Navbar';
-import Hero from './components/Hero';
-import SocialProof from './components/SocialProof';
-import SupportSection from './components/SupportSection';
-import FeaturesGrid from './components/FeaturesGrid';
+import React, { useState, useEffect, useCallback } from 'react';
+import './index.css';
+
+import Navbar          from './components/Navbar';
+import Hero            from './components/Hero';
+import SocialProof     from './components/SocialProof';
+import SupportSection  from './components/SupportSection';
+import FeaturesGrid    from './components/FeaturesGrid';
 import BenefitsSection from './components/BenefitsSection';
-import PricingSection from './components/PricingSection';
-import ContactForm from './components/ContactForm';
-import Footer from './components/Footer';
-import DashboardModal from './components/DashboardModal';
-import AuthModal from './components/AuthModal';
-import VideoModal from './components/VideoModal';
+import PricingSection  from './components/PricingSection';
+import ContactForm     from './components/ContactForm';
+import Footer          from './components/Footer';
+import AuthModal       from './components/AuthModal';
+import DashboardModal  from './components/DashboardModal';
+import VideoModal      from './components/VideoModal';
 
+/* ─── TOAST component ────────────────────────────────────────── */
+function ToastStack({ toasts }) {
+  if (!toasts.length) return null;
+  return (
+    <div className="toast-wrap">
+      {toasts.map(t => (
+        <div
+          key={t.id}
+          className="toast-item"
+          style={{
+            borderLeftColor:
+              t.type === 'success' ? '#54BD95'
+              : t.type === 'error'   ? '#EF4444'
+              : t.type === 'warning' ? '#F59E0B'
+              : '#3B82F6',
+          }}
+        >
+          <span style={{ fontSize: 16 }}>
+            {t.type === 'success' ? '✓' : t.type === 'error' ? '✕' : t.type === 'warning' ? '⚠' : 'ℹ'}
+          </span>
+          <span>{t.message}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/* ─── APP ────────────────────────────────────────────────────── */
 export default function App() {
-  const [authModal, setAuthModal] = useState(null); // 'login' | 'signup' | null
-  const [dashboardOpen, setDashboardOpen] = useState(false);
-  const [videoOpen, setVideoOpen] = useState(false);
-  const [user, setUser] = useState(null);
-  const [toasts, setToasts] = useState([]);
+  const [user, setUser]               = useState(null);
+  const [authModal, setAuthModal]     = useState(null);   // 'login' | 'signup' | null
+  const [dashboardOpen, setDashboard] = useState(false);
+  const [videoOpen, setVideoOpen]     = useState(false);
+  const [toasts, setToasts]           = useState([]);
 
-  // Load persistent user session if available
+  /* Restore session on mount */
   useEffect(() => {
     try {
-      const savedUser = localStorage.getItem('biccas_user');
-      if (savedUser) {
-        setUser(JSON.parse(savedUser));
-      }
-    } catch (e) {
-      console.error('Error restoring session', e);
-    }
+      const saved = localStorage.getItem('biccas_user');
+      if (saved) setUser(JSON.parse(saved));
+    } catch (_) {}
   }, []);
 
-  // Toast notification trigger
-  const showToast = (message, type = 'info') => {
-    const id = Date.now();
-    setToasts((prev) => [...prev, { id, message, type }]);
-    setTimeout(() => {
-      setToasts((prev) => prev.filter((t) => t.id !== id));
-    }, 3500);
-  };
+  /* Toast helper */
+  const showToast = useCallback((message, type = 'info') => {
+    const id = Date.now() + Math.random();
+    setToasts(prev => [...prev, { id, message, type }]);
+    setTimeout(() => setToasts(prev => prev.filter(t => t.id !== id)), 4000);
+  }, []);
 
-  const handleLogout = () => {
+  /* Auth handlers */
+  const handleLoginSuccess = useCallback((u) => {
+    setUser(u);
+    localStorage.setItem('biccas_user', JSON.stringify(u));
+  }, []);
+
+  const handleLogout = useCallback(() => {
     localStorage.removeItem('biccas_user');
     setUser(null);
-    showToast('Logged out of Biccas', 'info');
-  };
+    showToast('Successfully logged out', 'info');
+  }, [showToast]);
 
-  const handleSelectPlan = (plan) => {
-    if (plan.id === 'free') {
-      if (!user) {
-        setAuthModal('signup');
-      } else {
-        setDashboardOpen(true);
-      }
-      showToast(`Signing up for Free tier`, 'info');
+  /* Pricing plan CTA */
+  const handleSelectPlan = useCallback((plan) => {
+    if (!user) {
+      setAuthModal('signup');
+      showToast(`Create an account to get started with ${plan.name}!`, 'info');
     } else {
-      setDashboardOpen(true);
-      showToast(`Opening Workspace for ${plan.name} Plan!`, 'success');
+      setDashboard(true);
+      showToast(`Opening workspace for ${plan.name} plan!`, 'success');
     }
-  };
+  }, [user, showToast]);
+
+  /* Close auth modal */
+  const closeAuth = useCallback(() => setAuthModal(null), []);
 
   return (
-    <div className="app-root">
-      {/* Toast Notification Bar */}
-      <div className="toast-container">
-        {toasts.map((t) => (
-          <div key={t.id} className="toast" style={{
-            borderLeftColor: t.type === 'success' ? '#54BD95' : t.type === 'error' ? '#EF4444' : '#3B82F6'
-          }}>
-            <span>{t.type === 'success' ? '✓' : 'ℹ'}</span>
-            <span>{t.message}</span>
-          </div>
-        ))}
-      </div>
-
-      {/* Main Navigation */}
-      <Navbar 
+    <>
+      {/* ── Sections ── */}
+      <Navbar
         user={user}
         onLogout={handleLogout}
-        onOpenAuth={(mode) => setAuthModal(mode)}
-        onOpenDashboard={() => setDashboardOpen(true)}
+        onOpenAuth={setAuthModal}
+        onOpenDashboard={() => {
+          if (!user) { setAuthModal('login'); return; }
+          setDashboard(true);
+        }}
       />
 
-      {/* Landing Page Hero */}
-      <Hero 
-        onOpenDashboard={() => setDashboardOpen(true)}
-        onOpenVideoModal={() => setVideoOpen(true)}
-        onOpenAuth={(mode) => setAuthModal(mode)}
-      />
+      <main>
+        <Hero
+          onOpenDashboard={() => {
+            if (!user) { setAuthModal('signup'); return; }
+            setDashboard(true);
+          }}
+          onOpenVideoModal={() => setVideoOpen(true)}
+        />
 
-      {/* Social Proof Partners */}
-      <SocialProof />
+        <SocialProof />
 
-      {/* Global Support & Rating */}
-      <SupportSection />
+        <SupportSection />
 
-      {/* Features Showcase */}
-      <FeaturesGrid onOpenDashboard={() => setDashboardOpen(true)} />
+        <FeaturesGrid
+          onOpenDashboard={() => {
+            if (!user) { setAuthModal('signup'); return; }
+            setDashboard(true);
+          }}
+        />
 
-      {/* User Benefits Checklist */}
-      <BenefitsSection />
+        <BenefitsSection />
 
-      {/* Pricing Tier Plans */}
-      <PricingSection 
-        onOpenAuth={(mode) => setAuthModal(mode)}
-        onSelectPlan={handleSelectPlan}
-      />
+        <PricingSection onSelectPlan={handleSelectPlan} />
 
-      {/* Testimonials & Demo Request */}
-      <ContactForm showToast={showToast} />
+        <ContactForm showToast={showToast} />
 
-      {/* Site Footer */}
-      <Footer showToast={showToast} />
+        <Footer showToast={showToast} />
+      </main>
 
-      {/* Interactive Modals */}
-      {dashboardOpen && (
-        <DashboardModal 
-          onClose={() => setDashboardOpen(false)}
+      {/* ── Modals ── */}
+      {authModal && (
+        <AuthModal
+          initialMode={authModal}
+          onClose={closeAuth}
           showToast={showToast}
+          onLoginSuccess={handleLoginSuccess}
         />
       )}
 
-      {authModal && (
-        <AuthModal 
-          initialMode={authModal}
-          onClose={() => setAuthModal(null)}
+      {dashboardOpen && (
+        <DashboardModal
+          onClose={() => setDashboard(false)}
           showToast={showToast}
-          onLoginSuccess={(u) => setUser(u)}
+          user={user}
         />
       )}
 
       {videoOpen && (
         <VideoModal onClose={() => setVideoOpen(false)} />
       )}
-    </div>
+
+      {/* ── Toast notifications ── */}
+      <ToastStack toasts={toasts} />
+    </>
   );
 }

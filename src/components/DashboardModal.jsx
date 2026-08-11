@@ -40,7 +40,7 @@ export default function DashboardModal({ onClose, showToast }) {
 
   const handleDeleteTask = (id) => {
     setTasks(tasks.filter(t => t.id !== id));
-    showToast('Task deleted', 'warning');
+    showToast('Task removed from board', 'info');
   };
 
   // Cloud Storage Files State
@@ -68,7 +68,7 @@ export default function DashboardModal({ onClose, showToast }) {
   };
 
   return (
-    <div className="modal-overlay" onClick={onClose}>
+    <div className="modal-overlay" onClick={(e) => e.target === e.currentTarget && onClose()}>
       <div style={styles.modalContent} onClick={(e) => e.stopPropagation()}>
         {/* Modal Header */}
         <div style={styles.header}>

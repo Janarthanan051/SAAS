@@ -3,7 +3,7 @@ import { X, Play, CheckCircle2 } from 'lucide-react';
 
 export default function VideoModal({ onClose }) {
   return (
-    <div className="modal-overlay" onClick={onClose}>
+    <div className="modal-overlay" onClick={e => e.target === e.currentTarget && onClose()}>
       <div style={styles.modalContent} onClick={(e) => e.stopPropagation()}>
         <div style={styles.header}>
           <h3 style={styles.title}>Biccas Product Tour & Overview</h3>

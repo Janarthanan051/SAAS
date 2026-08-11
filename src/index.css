@@ -35,14 +35,16 @@ button { cursor: pointer; border: none; outline: none; font-family: 'Inter', san
 .float  { animation: floatUp  3.8s ease-in-out infinite; }
 .float2 { animation: floatUp2 3.8s ease-in-out infinite 1.5s; }
 
-/* Modal */
-.modal-backdrop {
+/* Modal - both class names work */
+.modal-backdrop,
+.modal-overlay {
   position: fixed; inset: 0;
   background: rgba(10, 16, 24, 0.72);
   backdrop-filter: blur(10px);
   z-index: 1000;
   display: flex; align-items: center; justify-content: center;
   padding: 20px;
+  overflow-y: auto;
 }
 @keyframes modalIn { from { opacity:0; transform:scale(0.95); } to { opacity:1; transform:scale(1); } }
 .modal-card { animation: modalIn 0.22s ease; }
@@ -51,6 +53,7 @@ button { cursor: pointer; border: none; outline: none; font-family: 'Inter', san
 .toast-wrap {
   position: fixed; bottom: 24px; right: 24px;
   z-index: 2000; display: flex; flex-direction: column; gap: 10px;
+  max-width: 360px;
 }
 @keyframes toastIn { from { transform:translateY(16px); opacity:0; } to { transform:translateY(0); opacity:1; } }
 .toast-item {
@@ -60,4 +63,28 @@ button { cursor: pointer; border: none; outline: none; font-family: 'Inter', san
   display: flex; align-items: center; gap: 10px;
   font-size: 14px; border-left: 4px solid #54BD95;
   animation: toastIn 0.28s cubic-bezier(0.16,1,0.3,1);
+}
+
+/* Input & select resets */
+input, select, textarea {
+  font-family: 'Inter', sans-serif;
+  box-sizing: border-box;
+}
+input::placeholder, textarea::placeholder {
+  color: #A6A6A6;
+}
+select { appearance: auto; background: #fff; }
+
+/* Scrollbar styling */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #F0F4F8; }
+::-webkit-scrollbar-thumb { background: #54BD95; border-radius: 3px; }
+
+/* ── Responsive breakpoints ── */
+@media (max-width: 1024px) {
+  .container { padding: 0 24px; }
+}
+
+@media (max-width: 768px) {
+  .container { padding: 0 16px; }
 }
