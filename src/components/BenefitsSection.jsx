@@ -1,13 +1,6 @@
 import React from 'react';
 import { Check, ShieldCheck } from 'lucide-react';
-
-const BENEFITS = [
-  'Free Course Entry With Registration',
-  'Online Learning & Workspace Templates',
-  'Live & Interactive Sessions',
-  'Savings Money For The Team',
-  'Seamless Integrations With 50+ Apps',
-];
+import { BENEFITS } from '../data/siteContent';
 
 export default function BenefitsSection() {
   return (
@@ -16,7 +9,7 @@ export default function BenefitsSection() {
 
         {/* LEFT – checklist */}
         <div style={S.left}>
-          <h2 style={S.h2}>What Benifit Will<br />You Get</h2>
+          <h2 style={S.h2}>What Benefit Will<br />You Get</h2>
           <ul style={S.list}>
             {BENEFITS.map((b, i) => (
               <li key={i} style={S.item}>
@@ -73,7 +66,7 @@ export default function BenefitsSection() {
 }
 
 const S = {
-  section: { padding: '80px 0', background: '#F8FBFA' },
+  section: { padding: '80px 0', background: '#F5FCFA' },
   grid: {
     display: 'grid', gridTemplateColumns: '1fr 1fr',
     gap: 64, alignItems: 'center',

@@ -59,8 +59,8 @@ export default function SocialProof() {
 const S = {
   section: {
     padding: '44px 0 56px',
-    background: '#fff',
-    borderBottom: '1px solid #F0F4F8',
+    background: '#F5FCFA',
+    borderBottom: '1px solid #E8F7F1',
   },
   inner: { textAlign: 'center' },
   title: {

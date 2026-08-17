@@ -9,12 +9,12 @@ export default function FeaturesGrid({ onOpenDashboard }) {
         {/* Header row */}
         <div style={S.headerRow}>
           <div style={S.headerLeft}>
-            <h2 style={S.h2}>Our Features<br />you cab get</h2>
+            <h2 style={S.h2}>Our Features<br />you can get</h2>
           </div>
           <div style={S.headerRight}>
             <p style={S.sub}>
-              We offer a variety of interesting features that you can help increase yor
-              productivity at work and manage your projct esaly
+              We offer a variety of interesting features that you can help increase your
+              productivity at work and manage your project easily
             </p>
             <button onClick={onOpenDashboard} style={S.btnGet}>Get Started</button>
           </div>
@@ -58,7 +58,7 @@ export default function FeaturesGrid({ onOpenDashboard }) {
                 </div>
               </div>
             </div>
-            <h3 style={S.cardTitle}>Collboration Teams</h3>
+            <h3 style={S.cardTitle}>Collaboration Teams</h3>
             <p style={S.cardDesc}>Here you can handle projects together with team virtually</p>
           </div>
 
@@ -89,7 +89,7 @@ export default function FeaturesGrid({ onOpenDashboard }) {
               </div>
             </div>
             <h3 style={S.cardTitle}>Cloud Storage</h3>
-            <p style={S.cardDesc}>No nedd to worry about storage because we provide storage up to 2 TB</p>
+            <p style={S.cardDesc}>No need to worry about storage because we provide storage up to 2 TB</p>
           </div>
 
           {/* ── CARD 3: Daily Analytics ── */}
@@ -167,7 +167,7 @@ export default function FeaturesGrid({ onOpenDashboard }) {
 }
 
 const S = {
-  section: { padding: '80px 0', background: '#fff' },
+  section: { padding: '80px 0', background: '#F8FBFA' },
   headerRow: {
     display: 'flex', justifyContent: 'space-between',
     alignItems: 'flex-start', marginBottom: 52,

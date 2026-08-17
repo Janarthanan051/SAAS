@@ -26,7 +26,7 @@ const FEATURES = [
     id: 'engagement',
     Icon: CmdIcon,
     title: 'Engagement',
-    desc: 'Quickly navigate you anda engage with your adience',
+    desc: 'Quickly navigate and engage with your audience',
   },
 ];
 
@@ -40,7 +40,7 @@ export default function SupportSection() {
         {/* LEFT */}
         <div style={S.left}>
           <h2 style={S.h2}>
-            How we support our<br />pratner all over the world
+            How we support our<br />partner all over the world
           </h2>
 
           <p style={S.desc}>
@@ -98,7 +98,7 @@ export default function SupportSection() {
 }
 
 const S = {
-  section: { padding: '80px 0', background: '#F8FBFA' },
+  section: { padding: '80px 0', background: '#F0F9F7' },
   grid: {
     display: 'grid', gridTemplateColumns: '1fr 1fr',
     gap: 64, alignItems: 'center',

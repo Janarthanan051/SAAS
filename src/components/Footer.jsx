@@ -1,20 +1,6 @@
 import React, { useState } from 'react';
 import { ArrowRight } from 'lucide-react';
-
-const COLS = [
-  {
-    title: 'Support',
-    links: ['Help centre', 'Account information', 'About', 'Contact us'],
-  },
-  {
-    title: 'Helpful Links',
-    links: ['Terms & conditions', 'Privacy policy', 'Security', 'Status'],
-  },
-  {
-    title: 'Products',
-    links: ['Update', 'Security', 'Beta test', 'Pricing product'],
-  },
-];
+import { FOOTER_COLUMNS } from '../data/siteContent';
 
 export default function Footer({ showToast }) {
   const [email, setEmail] = useState('');
@@ -55,7 +41,7 @@ export default function Footer({ showToast }) {
           </div>
 
           {/* Link columns */}
-          {COLS.map(col => (
+          {FOOTER_COLUMNS.map(col => (
             <div key={col.title} style={S.col}>
               <h4 style={S.colTitle}>{col.title}</h4>
               {col.links.map(l => (
@@ -82,7 +68,8 @@ export default function Footer({ showToast }) {
 
 const S = {
   footer: {
-    background: '#192026', color: '#A6A6A6',
+    background: 'linear-gradient(180deg, #1A2A2E 0%, #0F1F24 100%)',
+    color: '#A6A6A6',
     padding: '64px 0 24px',
     borderTop: '1px solid rgba(255,255,255,0.07)',
   },

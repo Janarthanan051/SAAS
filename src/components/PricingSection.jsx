@@ -1,27 +1,6 @@
 import React, { useState } from 'react';
 import { Check } from 'lucide-react';
-
-const PLANS = [
-  {
-    id: 'free', name: 'Free', price: 0,
-    desc: 'Have a go and see your app perform',
-    features: ['2 Users', '2GB Storage', 'Public Share & Comments', 'Chat Support', 'New updates outline'],
-    btn: 'Sign up for free', popular: false,
-  },
-  {
-    id: 'pro', name: 'Pro', price: 8,
-    desc: 'Experiment the power of professional automation',
-    badge: 'Save 20%',
-    features: ['4 Users', '10GB Storage', 'Public Share & Comments', 'Chat Support & Analytics', 'Advanced Security'],
-    btn: 'Go to Pro', popular: true,
-  },
-  {
-    id: 'business', name: 'Business', price: 16,
-    desc: 'Unleash maximum performance for teams',
-    features: ['10 Users & Manager', '100GB Cloud Storage', 'Direct Custom Domain', '24/7 Priority Support', 'Collaboration Teams'],
-    btn: 'Goto Business', popular: false,
-  },
-];
+import { PLANS } from '../data/siteContent';
 
 export default function PricingSection({ onSelectPlan }) {
   const [yearly, setYearly] = useState(true);
@@ -97,7 +76,7 @@ export default function PricingSection({ onSelectPlan }) {
 }
 
 const S = {
-  section: { padding: '80px 0', background: '#fff' },
+  section: { padding: '80px 0', background: '#FBFDFE' },
   hdr: { textAlign: 'center', maxWidth: 500, margin: '0 auto 52px' },
   h2: {
     fontFamily: "'Plus Jakarta Sans', sans-serif",

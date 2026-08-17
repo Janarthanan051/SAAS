@@ -1,13 +1,6 @@
 import React, { useState } from 'react';
 import { Menu, X, LogOut, LayoutDashboard } from 'lucide-react';
-
-const NAV = [
-  { label: 'Home',     href: '#home',     active: true  },
-  { label: 'Product',  href: '#features', active: false },
-  { label: 'FAQ',      href: '#support',  active: false },
-  { label: 'Blog',     href: '#features', active: false },
-  { label: 'About Us', href: '#benefits', active: false },
-];
+import { NAV_ITEMS } from '../data/siteContent';
 
 export default function Navbar({ user, onLogout, onOpenAuth, onOpenDashboard }) {
   const [open, setOpen] = useState(false);
@@ -20,7 +13,7 @@ export default function Navbar({ user, onLogout, onOpenAuth, onOpenDashboard }) 
 
         {/* Desktop Nav */}
         <ul style={S.links}>
-          {NAV.map(n => (
+          {NAV_ITEMS.map(n => (
             <li key={n.label}>
               <a href={n.href} style={n.active ? S.linkActive : S.link}>{n.label}</a>
             </li>
@@ -64,7 +57,7 @@ export default function Navbar({ user, onLogout, onOpenAuth, onOpenDashboard }) 
       {/* Mobile menu */}
       {open && (
         <div style={S.drawer}>
-          {NAV.map(n => (
+          {NAV_ITEMS.map(n => (
             <a key={n.label} href={n.href} style={S.drawerLink} onClick={() => setOpen(false)}>
               {n.label}
             </a>
@@ -82,7 +75,8 @@ export default function Navbar({ user, onLogout, onOpenAuth, onOpenDashboard }) 
 const S = {
   nav: {
     position: 'sticky', top: 0, zIndex: 100,
-    background: 'rgba(235,247,242,0.94)',
+    background: 'linear-gradient(90deg, rgba(230,250,246,0.96) 0%, rgba(239,249,245,0.96) 50%, rgba(248,252,254,0.96) 100%)',
+    WebkitBackdropFilter: 'blur(16px)',
     backdropFilter: 'blur(16px)',
     borderBottom: '1px solid rgba(84,189,149,0.08)',
   },

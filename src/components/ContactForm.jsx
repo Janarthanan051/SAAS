@@ -1,32 +1,6 @@
 import React, { useState } from 'react';
 import { CheckCircle2, Play, Send } from 'lucide-react';
-
-const TESTIMONIALS = [
-  {
-    quote: 'I am very helped by this E-wallet application , my days are very easy to use this application and its very helpful in in my life , i recommend it to you 🌟',
-    name: 'John Richard',
-    role: 'Founder at TechFlow',
-    avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=80&q=80',
-  },
-  {
-    quote: 'Biccas has transformed how our remote team operates. Task management, cloud sync and live analytics in one clean dashboard!',
-    name: 'Sarah Jenkins',
-    role: 'VP of Product at Acme',
-    avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=80&q=80',
-  },
-  {
-    quote: 'The collaboration features are unmatched. Our productivity increased 40% in just 2 weeks of using Biccas.',
-    name: 'Marcus Williams',
-    role: 'CTO at FinTech Co',
-    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=80&q=80',
-  },
-  {
-    quote: 'Best SaaS tool we have ever used. The analytics alone are worth the price.',
-    name: 'Alicia Kim',
-    role: 'Head of Growth',
-    avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=80&q=80',
-  },
-];
+import { TESTIMONIALS } from '../data/siteContent';
 
 export default function ContactForm({ showToast }) {
   const [idx, setIdx] = useState(0);
@@ -49,7 +23,7 @@ export default function ContactForm({ showToast }) {
 
         {/* LEFT – testimonials */}
         <div style={S.left}>
-          <h2 style={S.h2}>People are Saying<br />About DoWithIt</h2>
+          <h2 style={S.h2}>People are Saying<br />About Biccas</h2>
           <p style={S.sub}>
             Everything you need to accept payment and grow your money or manage your business.
           </p>
@@ -152,7 +126,10 @@ export default function ContactForm({ showToast }) {
 }
 
 const S = {
-  section: { padding: '80px 0', background: '#192026' },
+  section: {
+    padding: '80px 0 60px',
+    background: 'linear-gradient(180deg, #F5FCFA 0%, #EEF8FB 50%, #E8F5F9 100%)',
+  },
   grid: {
     display: 'grid', gridTemplateColumns: '1fr 1fr',
     gap: 60, alignItems: 'center',
@@ -160,26 +137,26 @@ const S = {
   left: { maxWidth: 490 },
   h2: {
     fontFamily: "'Plus Jakarta Sans', sans-serif",
-    fontSize: 34, fontWeight: 800, color: '#fff',
+    fontSize: 34, fontWeight: 800, color: '#192026',
     lineHeight: 1.22, marginBottom: 14,
   },
-  sub: { fontSize: 14, color: '#94A3B8', lineHeight: 1.75, marginBottom: 28 },
+  sub: { fontSize: 14, color: '#68717A', lineHeight: 1.75, marginBottom: 28 },
   quoteMark: {
     fontSize: 60, color: '#54BD95', lineHeight: 1,
     marginBottom: -12, fontFamily: 'Georgia, serif',
   },
   quoteText: {
-    fontSize: 16, color: '#CBD5E1', lineHeight: 1.68,
-    marginBottom: 28, fontStyle: 'italic',
+    fontSize: 16, color: '#192026', lineHeight: 1.68,
+    marginBottom: 28, fontStyle: 'italic', fontWeight: 500,
   },
   authorRow: {
     display: 'flex', justifyContent: 'space-between', alignItems: 'center',
   },
   authorName: {
     fontFamily: "'Plus Jakarta Sans', sans-serif",
-    fontSize: 16, fontWeight: 700, color: '#fff', marginBottom: 3,
+    fontSize: 16, fontWeight: 700, color: '#192026', marginBottom: 3,
   },
-  authorRole: { fontSize: 12, color: '#94A3B8' },
+  authorRole: { fontSize: 12, color: '#A6A6A6' },
   navRow: { display: 'flex', alignItems: 'center', gap: 12 },
   aviRow: { display: 'flex', gap: 6 },
   avi: {

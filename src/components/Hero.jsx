@@ -22,9 +22,9 @@ export default function Hero({ onOpenDashboard, onOpenVideoModal }) {
                 xmlns="http://www.w3.org/2000/svg"
               >
                 <path
-                  d="M 4 11 Q 85 3 170 9 Q 255 15 336 7"
+                  d="M 4 10 Q 85 2 170 8 Q 255 14 336 8"
                   stroke="#54BD95"
-                  strokeWidth="5"
+                  strokeWidth="6"
                   strokeLinecap="round"
                   fill="none"
                 />
@@ -33,7 +33,7 @@ export default function Hero({ onOpenDashboard, onOpenVideoModal }) {
           </h1>
 
           <p style={S.sub}>
-            Let's make your work more organize and easily using the Taskio Dashboard with many of the latest featuresin managing work every day.
+            Let's make your work more organize and easily using the Taskio Dashboard with many of the latest features in managing work every day.
           </p>
 
           <div style={S.btnRow}>
@@ -146,7 +146,7 @@ export default function Hero({ onOpenDashboard, onOpenVideoModal }) {
 
 const S = {
   section: {
-    background: 'linear-gradient(165deg, #E8F7F1 0%, #EFF9F5 40%, #ffffff 100%)',
+    background: 'linear-gradient(135deg, #D0F4ED 0%, #E0FAFA 35%, #EEF8FB 70%, #F8FCFE 100%)',
     padding: '52px 0 80px',
   },
   grid: {
