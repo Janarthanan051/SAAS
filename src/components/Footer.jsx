@@ -1,6 +1,20 @@
 import React, { useState } from 'react';
 import { ArrowRight } from 'lucide-react';
-import { FOOTER_COLUMNS } from '../data/siteContent';
+
+const FOOTER_DATA = [
+  {
+    title: 'Support',
+    links: ['Help centre', 'Account information', 'About', 'Contact us'],
+  },
+  {
+    title: 'Help and Solution',
+    links: ['Talk to support', 'Support docs', 'System status', 'Covid response'],
+  },
+  {
+    title: 'Product',
+    links: ['Update', 'Security', 'Beta test', 'Pricing product'],
+  },
+];
 
 export default function Footer({ showToast }) {
   const [email, setEmail] = useState('');
@@ -13,18 +27,17 @@ export default function Footer({ showToast }) {
   };
 
   return (
-    <footer style={S.footer}>
+    <footer className="section-navy" style={S.footer}>
       <div className="container">
-        <div style={S.top}>
+        <div className="footer-top-grid" style={S.top}>
 
           {/* Brand + newsletter */}
-          <div style={S.brand}>
-            <a href="#" style={S.logo}>
-              <span>Biccas</span>
-              <span style={S.dot} />
+          <div className="footer-brand-col" style={S.brand}>
+            <a href="#home" style={S.logo}>
+              Biccas
             </a>
             <p style={S.tagline}>
-              Get started now try our product for free and scale your team.
+              Get started now try our product
             </p>
             <form onSubmit={handleSub} style={S.form}>
               <input
@@ -35,14 +48,14 @@ export default function Footer({ showToast }) {
                 style={S.input}
               />
               <button type="submit" style={S.arrowBtn}>
-                <ArrowRight size={15} color="#fff" />
+                <ArrowRight size={18} color="#FFFFFF" />
               </button>
             </form>
           </div>
 
           {/* Link columns */}
-          {FOOTER_COLUMNS.map(col => (
-            <div key={col.title} style={S.col}>
+          {FOOTER_DATA.map(col => (
+            <div key={col.title} className="footer-col" style={S.col}>
               <h4 style={S.colTitle}>{col.title}</h4>
               {col.links.map(l => (
                 <a key={l} href="#" style={S.colLink}>{l}</a>
@@ -53,8 +66,8 @@ export default function Footer({ showToast }) {
         </div>
 
         {/* Bottom bar */}
-        <div style={S.bottom}>
-          <span style={S.copy}>© 2026 Biccas Inc. Copyright and rights reserved</span>
+        <div className="footer-bottom-bar" style={S.bottom}>
+          <span style={S.copy}>© 2022 Biccas Inc.</span>
           <div style={S.bottomLinks}>
             <a href="#" style={S.bottomLink}>Terms and Conditions</a>
             <span style={S.sep}>•</span>
@@ -68,56 +81,76 @@ export default function Footer({ showToast }) {
 
 const S = {
   footer: {
-    background: 'linear-gradient(180deg, #1A2A2E 0%, #0F1F24 100%)',
+    background: '#161C28',
     color: '#A6A6A6',
-    padding: '64px 0 24px',
+    padding: '80px 0 36px',
     borderTop: '1px solid rgba(255,255,255,0.07)',
   },
   top: {
     display: 'grid',
-    gridTemplateColumns: '1.8fr 1fr 1fr 1fr',
-    gap: 48, marginBottom: 48,
+    gridTemplateColumns: '1.6fr 1fr 1.2fr 1fr',
+    gap: 64, marginBottom: 64,
   },
-  brand: { maxWidth: 320 },
+  brand: { maxWidth: 410 },
   logo: {
-    display: 'inline-flex', alignItems: 'center', gap: 5,
-    fontFamily: "'Plus Jakarta Sans', sans-serif",
-    fontSize: 22, fontWeight: 800, color: '#54BD95',
-    marginBottom: 12, textDecoration: 'none',
+    fontFamily: "'Inter', sans-serif",
+    fontSize: 50, fontWeight: 600, color: '#54BD95',
+    marginBottom: 16, textDecoration: 'none',
+    display: 'inline-block', letterSpacing: '0%',
   },
-  dot: {
-    display: 'inline-block', width: 7, height: 7,
-    background: '#54BD95', borderRadius: '50%', marginTop: 8,
+  tagline: {
+    fontFamily: "'Inter', sans-serif",
+    fontSize: 18, color: '#A6A6A6', lineHeight: '30px',
+    marginBottom: 28, letterSpacing: '0%', fontWeight: 500,
   },
-  tagline: { fontSize: 13, lineHeight: 1.68, marginBottom: 20 },
-  form: { position: 'relative', display: 'flex', alignItems: 'center' },
+  form: {
+    position: 'relative', display: 'flex', alignItems: 'center',
+    width: '100%', maxWidth: 410,
+  },
   input: {
-    width: '100%', padding: '12px 46px 12px 18px',
-    borderRadius: 999, background: 'transparent',
-    border: '1px solid #2E3D4A', color: '#fff',
-    fontSize: 12, outline: 'none',
+    width: '100%', height: 60,
+    padding: '0 60px 0 24px',
+    borderRadius: 70, background: 'transparent',
+    border: '2px solid #A6A6A6', color: '#FFFFFF',
+    fontSize: 16, outline: 'none',
     fontFamily: "'Inter', sans-serif",
   },
   arrowBtn: {
-    position: 'absolute', right: 5,
-    width: 34, height: 34, borderRadius: '50%',
-    background: '#54BD95',
+    position: 'absolute', right: 7,
+    width: 46, height: 46, borderRadius: '50%',
+    background: '#54BD95', border: 'none',
     display: 'flex', alignItems: 'center', justifyContent: 'center',
+    cursor: 'pointer',
   },
-  col: { display: 'flex', flexDirection: 'column', gap: 10 },
+  col: { display: 'flex', flexDirection: 'column', gap: 16 },
   colTitle: {
-    fontFamily: "'Plus Jakarta Sans', sans-serif",
-    color: '#fff', fontSize: 14, fontWeight: 700, marginBottom: 4,
+    fontFamily: "'Inter', sans-serif",
+    color: '#FFFFFF', fontSize: 18, fontWeight: 500,
+    marginBottom: 8, letterSpacing: '0%',
   },
-  colLink: { fontSize: 13, color: '#A6A6A6', textDecoration: 'none' },
+  colLink: {
+    fontFamily: "'Inter', sans-serif",
+    fontSize: 18, color: '#A6A6A6', textDecoration: 'none',
+    letterSpacing: '0%', fontWeight: 500,
+  },
   bottom: {
     display: 'flex', justifyContent: 'space-between',
-    alignItems: 'center', paddingTop: 22,
+    alignItems: 'center', paddingTop: 28,
     borderTop: '1px solid rgba(255,255,255,0.07)',
-    flexWrap: 'wrap', gap: 12,
+    flexWrap: 'wrap', gap: 16,
   },
-  copy: { fontSize: 12 },
-  bottomLinks: { display: 'flex', alignItems: 'center', gap: 8 },
-  bottomLink: { fontSize: 12, color: '#A6A6A6', textDecoration: 'none' },
-  sep: { fontSize: 12 },
+  copy: {
+    fontFamily: "'Inter', sans-serif",
+    fontSize: 18, fontWeight: 500, color: '#FFFFFF',
+    lineHeight: '30px', letterSpacing: '0%',
+  },
+  bottomLinks: { display: 'flex', alignItems: 'center', gap: 12 },
+  bottomLink: {
+    fontFamily: "'Inter', sans-serif",
+    fontSize: 18, color: '#FFFFFF', textDecoration: 'none',
+    fontWeight: 500, letterSpacing: '0%',
+  },
+  sep: {
+    fontSize: 18, color: '#A6A6A6',
+  },
 };

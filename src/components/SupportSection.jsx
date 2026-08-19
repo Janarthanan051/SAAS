@@ -1,60 +1,69 @@
-import React, { useState } from 'react';
-import { Star, Send, BarChart2 } from 'lucide-react';
+import React from 'react';
+import { Star } from 'lucide-react';
 
-/* ⌘ icon for Engagement */
+/* Pulse / Waveform Icon for Publishing */
+const PulseIcon = () => (
+  <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#54BD95" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+  </svg>
+);
+
+/* Pie Chart Icon for Analytics */
+const AnalyticsIcon = () => (
+  <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#54BD95" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M21.21 15.89A10 10 0 1 1 8 2.83" />
+    <path d="M22 12A10 10 0 0 0 12 2v10z" />
+  </svg>
+);
+
+/* Command / Clover Icon for Engagement */
 const CmdIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <rect x="1" y="1" width="22" height="22" rx="5" stroke="#54BD95" strokeWidth="2"/>
-    <path d="M9 9H6a2 2 0 1 1 2-2v2zm0 0h6m0 0h3a2 2 0 1 1-2 2h-1m1-2V6a2 2 0 1 1 2 2h-2zm-7 6H6a2 2 0 1 0 2 2v-2zm0 0h6m0 0h3a2 2 0 1 0-2-2h-1m1 2v2a2 2 0 1 0 2-2h-2z" stroke="#54BD95" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+  <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#54BD95" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M18 9a3 3 0 1 0-3-3M6 9a3 3 0 1 1 3-3M6 15a3 3 0 1 0 3 3M18 15a3 3 0 1 1-3 3M9 9h6v6H9z" />
   </svg>
 );
 
 const FEATURES = [
   {
     id: 'publishing',
-    Icon: () => <Send size={20} color="#54BD95" />,
+    Icon: PulseIcon,
     title: 'Publishing',
-    desc: 'Plan, schedule, and publish content that converts, right from your dashboard. We got your back.',
+    desc: 'Plan, collaborate, and publishing your contetn that drivees meaningful engagement and growth for your barnd',
   },
   {
     id: 'analytics',
-    Icon: () => <BarChart2 size={20} color="#54BD95" />,
+    Icon: AnalyticsIcon,
     title: 'Analytics',
-    desc: 'Analyze your performance and measure campaign return on investment.',
+    desc: 'Analyze your performance and create goeorgeous report',
   },
   {
     id: 'engagement',
     Icon: CmdIcon,
     title: 'Engagement',
-    desc: 'Quickly navigate and engage with your audience',
+    desc: 'Quiuckly navigate you anda engage with your adience',
   },
 ];
 
 export default function SupportSection() {
-  const [active, setActive] = useState('engagement');
-
   return (
-    <section id="support" style={S.section}>
-      <div className="container" style={S.grid}>
+    <section id="support" className="section-lavender" style={S.section}>
+      <div className="container support-grid" style={S.grid}>
 
         {/* LEFT */}
-        <div style={S.left}>
-          <h2 style={S.h2}>
-            How we support our<br />partner all over the world
-          </h2>
+        <div className="support-left" style={S.left}>
+          <h2 className="section-title" style={S.h2}>How we support our<br />pratner all over the world</h2>
 
           <p style={S.desc}>
-            As a matter of fact the terrible news is that you cannot solve the issue by trying
-            the same methods. You need a platform to coordinate team tasks and simplify your
-            workflow with top security.
+            SaaS become a common delivery model for many business application, inclouding office software, messaging software, payroll processing software, DBMS software, management software
           </p>
 
-          <div style={S.ratings}>
+          {/* Ratings Row */}
+          <div className="support-ratings" style={S.ratings}>
             {/* 4.9 databricks */}
             <div style={S.ratingBox}>
               <div style={S.stars}>
                 {[...Array(5)].map((_, i) => (
-                  <Star key={i} size={14} fill="#FFC107" color="#FFC107" />
+                  <Star key={i} size={26} fill="#FFC728" color="#FFC728" />
                 ))}
               </div>
               <div style={S.score}><strong>4.9</strong> / 5 rating</div>
@@ -65,9 +74,9 @@ export default function SupportSection() {
             <div style={S.ratingBox}>
               <div style={S.stars}>
                 {[...Array(4)].map((_, i) => (
-                  <Star key={i} size={14} fill="#FFC107" color="#FFC107" />
+                  <Star key={i} size={26} fill="#FFC728" color="#FFC728" />
                 ))}
-                <Star size={14} fill="#E5E7EB" color="#E5E7EB" />
+                <Star size={26} fill="#BBBBBB" color="#BBBBBB" />
               </div>
               <div style={S.score}><strong>4.8</strong> / 5 rating</div>
               <div style={S.brand}>Chainanalysis</div>
@@ -78,15 +87,13 @@ export default function SupportSection() {
         {/* RIGHT */}
         <div style={S.right}>
           {FEATURES.map(({ id, Icon, title, desc }) => (
-            <div
-              key={id}
-              onClick={() => setActive(id)}
-              style={{ ...S.card, ...(active === id ? S.cardActive : {}) }}
-            >
-              <div style={S.iconBox}><Icon /></div>
-              <div>
-                <div style={S.cardTitle}>{title}</div>
-                <div style={S.cardDesc}>{desc}</div>
+            <div key={id} style={S.itemRow}>
+              <div style={S.iconBox}>
+                <Icon />
+              </div>
+              <div style={S.itemContent}>
+                <h3 style={S.itemTitle}>{title}</h3>
+                <p style={S.itemDesc}>{desc}</p>
               </div>
             </div>
           ))}
@@ -98,47 +105,65 @@ export default function SupportSection() {
 }
 
 const S = {
-  section: { padding: '80px 0', background: '#F0F9F7' },
+  section: { padding: '90px 0', background: '#F9F8FE' },
   grid: {
-    display: 'grid', gridTemplateColumns: '1fr 1fr',
-    gap: 64, alignItems: 'center',
+    display: 'grid', gridTemplateColumns: '1.1fr 0.9fr',
+    gap: 64, alignItems: 'flex-start',
   },
-  left: { maxWidth: 500 },
+  left: { maxWidth: 644 },
   h2: {
-    fontFamily: "'Plus Jakarta Sans', sans-serif",
-    fontSize: 34, fontWeight: 800, color: '#192026',
-    lineHeight: 1.25, marginBottom: 16,
+    fontFamily: "'Inter', sans-serif",
+    fontSize: 50, fontWeight: 600,
+    color: '#191A15', lineHeight: 1.2,
+    letterSpacing: '0%', marginBottom: 24,
   },
   desc: {
-    fontSize: 14, color: '#A6A6A6', lineHeight: 1.78,
-    marginBottom: 36,
+    fontFamily: "'Inter', sans-serif",
+    fontSize: 16, fontWeight: 500,
+    color: '#A6A6A6', lineHeight: '30px',
+    letterSpacing: '0%', marginBottom: 44,
+    maxWidth: 644,
   },
-  ratings: { display: 'flex', gap: 48 },
-  ratingBox: { display: 'flex', flexDirection: 'column', gap: 5 },
-  stars: { display: 'flex', gap: 2, marginBottom: 2 },
-  score: { fontSize: 14, color: '#192026', fontWeight: 500 },
-  brand: { fontSize: 12, color: '#A6A6A6', fontWeight: 500 },
-  right: { display: 'flex', flexDirection: 'column', gap: 16 },
-  card: {
-    display: 'flex', gap: 16, padding: '18px 20px',
-    borderRadius: 14, background: '#fff',
-    border: '1.5px solid #E8EDF0',
-    cursor: 'pointer', transition: 'all 0.22s ease',
+  ratings: { display: 'flex', gap: 60, alignItems: 'flex-start' },
+  ratingBox: {
+    display: 'flex', flexDirection: 'column',
+    justifyContent: 'space-between',
+    width: 160, height: 110,
   },
-  cardActive: {
-    borderColor: '#54BD95',
-    boxShadow: '0 6px 22px rgba(84,189,149,0.13)',
-    transform: 'translateY(-2px)',
+  stars: { display: 'flex', gap: 6, alignItems: 'center' },
+  score: {
+    fontFamily: "'Inter', sans-serif",
+    fontSize: 18, color: '#191A15', fontWeight: 500, lineHeight: '30px',
+  },
+  brand: {
+    fontFamily: "'Inter', sans-serif",
+    fontSize: 18, color: '#A6A6A6', fontWeight: 600, lineHeight: '30px',
+  },
+  right: {
+    display: 'flex', flexDirection: 'column', gap: 36,
+    maxWidth: 509, width: '100%',
+  },
+  itemRow: {
+    display: 'flex', gap: 20, alignItems: 'flex-start',
   },
   iconBox: {
-    width: 44, height: 44, borderRadius: 11,
-    background: '#EBF7F2',
+    width: 60, height: 60, borderRadius: 10,
+    background: '#FFFFFF',
+    boxShadow: '0 4px 9px rgba(0,0,0,0.05)',
     display: 'flex', alignItems: 'center', justifyContent: 'center',
     flexShrink: 0,
   },
-  cardTitle: {
-    fontFamily: "'Plus Jakarta Sans', sans-serif",
-    fontSize: 16, fontWeight: 700, color: '#192026', marginBottom: 4,
+  itemContent: { flex: 1 },
+  itemTitle: {
+    fontFamily: "'Inter', sans-serif",
+    fontSize: 28, fontWeight: 700,
+    color: '#191A15', lineHeight: 1.2,
+    letterSpacing: '0%', marginBottom: 8,
   },
-  cardDesc: { fontSize: 13, color: '#A6A6A6', lineHeight: 1.6 },
+  itemDesc: {
+    fontFamily: "'Inter', sans-serif",
+    fontSize: 18, fontWeight: 500,
+    color: '#A6A6A6', lineHeight: '30px',
+    letterSpacing: '0%', maxWidth: 428,
+  },
 };

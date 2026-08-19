@@ -11,38 +11,38 @@ export const PLANS = [
     id: 'free',
     name: 'Free',
     price: 0,
-    desc: 'Have a go and see your app perform',
-    features: ['2 Users', '2GB Storage', 'Public Share & Comments', 'Chat Support', 'New updates outline'],
-    btn: 'Sign up for free',
+    desc: 'Have a go and test your superpowers',
+    features: ['2 Users', '2 Files', 'Public Share & Comments', 'Chat Support', 'New income apps'],
+    btn: 'Signup for free',
     popular: false,
   },
   {
     id: 'pro',
     name: 'Pro',
     price: 8,
-    desc: 'Experiment the power of professional automation',
+    desc: 'Experiment the power of infinite possibilities',
     badge: 'Save 20%',
-    features: ['4 Users', '10GB Storage', 'Public Share & Comments', 'Chat Support & Analytics', 'Advanced Security'],
-    btn: 'Go to Pro',
+    features: ['4 Users', 'All apps', 'Unlimited editable exports', 'Folders and collaboration', 'All incoming apps'],
+    btn: 'Go to pro',
     popular: true,
   },
   {
     id: 'business',
     name: 'Business',
     price: 16,
-    desc: 'Unleash maximum performance for teams',
-    features: ['10 Users & Manager', '100GB Cloud Storage', 'Direct Custom Domain', '24/7 Priority Support', 'Collaboration Teams'],
+    desc: 'Unlimit your potential and get maximum results',
+    features: ['All the features of pro plan', 'Account success manager', 'Single Sign-On (SSO)', 'Co-conception pannel', 'Collaboration Security'],
     btn: 'Goto Business',
     popular: false,
   },
 ];
 
 export const BENEFITS = [
-  'Free Course Entry With Registration',
-  'Online Learning & Workspace Templates',
-  'Live & Interactive Sessions',
-  'Savings Money For The Team',
-  'Seamless Integrations With 50+ Apps',
+  'Free Income Monitoring Monthly',
+  'Online Learning',
+  'Real-time Collaboration',
+  'Saving Money For The Team',
+  'Online Transaction',
 ];
 
 export const FOOTER_COLUMNS = [
@@ -51,11 +51,11 @@ export const FOOTER_COLUMNS = [
     links: ['Help centre', 'Account information', 'About', 'Contact us'],
   },
   {
-    title: 'Helpful Links',
-    links: ['Terms & conditions', 'Privacy policy', 'Security', 'Status'],
+    title: 'Help and Solution',
+    links: ['Talk to support', 'Support docs', 'System status', 'Covid response'],
   },
   {
-    title: 'Products',
+    title: 'Product',
     links: ['Update', 'Security', 'Beta test', 'Pricing product'],
   },
 ];
@@ -70,10 +70,10 @@ export const PARTNERS = [
 
 export const TESTIMONIALS = [
   {
-    quote: 'I am very helped by this E-wallet application , my days are very easy to use this application and its very helpful in in my life , i recommend it to you 🌟',
-    name: 'John Richard',
+    quote: 'I am very helped by this Taskio application, my work is more organized and easy to manage every day, so I highly recommend it for you',
+    name: 'Isabel Claire',
     role: 'Founder at TechFlow',
-    avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=80&q=80',
+    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=80&q=80',
   },
   {
     quote: 'Biccas has transformed how our remote team operates. Task management, cloud sync and live analytics in one clean dashboard!',
@@ -94,3 +94,4 @@ export const TESTIMONIALS = [
     avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=80&q=80',
   },
 ];
+

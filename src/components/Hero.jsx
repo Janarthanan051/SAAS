@@ -4,27 +4,27 @@ import { Play, Check } from 'lucide-react';
 export default function Hero({ onOpenDashboard, onOpenVideoModal }) {
   return (
     <section id="home" style={S.section}>
-      <div className="container" style={S.grid}>
+      <div className="container hero-grid" style={S.grid}>
 
         {/* ── LEFT ── */}
-        <div style={S.left}>
-          <h1 style={S.h1}>
-            We're here to<br />
-            Increase your<br />
-            <span style={S.highlight}>
+        <div className="hero-left" style={S.left}>
+          <h1 className="hero-title" style={S.h1}>
+            <span style={{ display: 'block' }}>We're here to</span>
+            <span style={{ display: 'block' }}>Increase your</span>
+            <span style={{ ...S.highlight, display: 'inline-block' }}>
               Productivity
-              {/* Exact curved green underline from reference */}
+              {/* Exact curved green underline Vector 32 */}
               <svg
                 style={S.underlineSvg}
-                viewBox="0 0 340 16"
+                viewBox="0 0 479 26"
                 preserveAspectRatio="none"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
               >
                 <path
-                  d="M 4 10 Q 85 2 170 8 Q 255 14 336 8"
+                  d="M 6 22 Q 240 2 473 22"
                   stroke="#54BD95"
-                  strokeWidth="6"
+                  strokeWidth="8"
                   strokeLinecap="round"
                   fill="none"
                 />
@@ -32,15 +32,15 @@ export default function Hero({ onOpenDashboard, onOpenVideoModal }) {
             </span>
           </h1>
 
-          <p style={S.sub}>
+          <p className="hero-sub" style={S.sub}>
             Let's make your work more organize and easily using the Taskio Dashboard with many of the latest features in managing work every day.
           </p>
 
-          <div style={S.btnRow}>
+          <div className="hero-btn-row" style={S.btnRow}>
             <button onClick={onOpenDashboard} style={S.btnTrial}>Try free trial</button>
             <button onClick={onOpenVideoModal} style={S.btnDemo}>
               <span style={S.playCircle}>
-                <Play size={11} color="#192026" fill="none" strokeWidth={2.5} style={{ marginLeft: 2 }} />
+                <Play size={13} color="#191A15" fill="#191A15" style={{ marginLeft: 2 }} />
               </span>
               <span style={S.demoLabel}>View Demo</span>
             </button>
@@ -48,91 +48,63 @@ export default function Hero({ onOpenDashboard, onOpenVideoModal }) {
         </div>
 
         {/* ── RIGHT ── */}
-        <div style={S.right}>
-          <div style={S.graphic}>
+        <div className="hero-right" style={S.right}>
+          <div className="hero-graphic" style={S.graphic}>
 
-            {/* Green background rounded rectangle */}
-            <div style={S.greenBox}>
-              {/* Zig-zag / wave line inside green box */}
-              <svg style={S.waveSvg} viewBox="0 0 280 380" fill="none">
-                <polyline
-                  points="10,80 50,40 90,110 130,30 170,100 210,50 260,90"
-                  stroke="rgba(255,255,255,0.25)" strokeWidth="2.5"
-                  fill="none" strokeLinecap="round" strokeLinejoin="round"
-                />
-                <polyline
-                  points="10,160 60,120 100,200 140,130 180,190 230,150 270,180"
-                  stroke="rgba(255,255,255,0.18)" strokeWidth="2"
-                  fill="none" strokeLinecap="round" strokeLinejoin="round"
-                />
-              </svg>
-            </div>
+            {/* Green card + person: CSS background-image */}
+            <div style={S.greenBox} />
 
-            {/* Person image overlaid on green box */}
-            <img
-              src="/hero_person.jpg"
-              alt="Person"
-              style={S.personImg}
-              onError={e => {
-                e.target.style.display = 'none';
-              }}
-            />
-
-            {/* White card: Enter amount */}
-            <div className="float" style={S.cardAmount}>
+            {/* ── Floating Card: Enter amount (top-left) ── */}
+            <div style={S.cardAmount}>
               <div style={S.amtLabel}>Enter amount</div>
               <div style={S.amtRow}>
-                <span style={S.amtVal}>$450.00</span>
+                <span style={S.amtVal}>$450..00</span>
                 <button style={S.btnSend}>Send</button>
               </div>
             </div>
 
-            {/* Purple rounded-square checkmark */}
+            {/* ── Badge: Purple Check ── */}
             <div style={S.purpleCheck}>
-              <Check size={12} color="#fff" strokeWidth={3} />
+              <Check size={20} color="#fff" strokeWidth={3.5} />
             </div>
 
-            {/* Yellow/gold rounded-square icon top-right of green */}
+            {/* ── Badge: Yellow Database ── */}
             <div style={S.yellowIcon}>
-              {/* document icon lines */}
-              <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-                <rect x="2" y="1" width="14" height="16" rx="2" fill="rgba(255,255,255,0.3)"/>
-                <rect x="4" y="5" width="10" height="1.5" rx="0.75" fill="white"/>
-                <rect x="4" y="8" width="8" height="1.5" rx="0.75" fill="white"/>
-                <rect x="4" y="11" width="6" height="1.5" rx="0.75" fill="white"/>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
+                <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path>
+                <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
               </svg>
             </div>
 
-            {/* White card: Total Income */}
-            <div className="float2" style={S.cardIncome}>
+            {/* ── Floating Card: Total Income (bottom-left) ── */}
+            <div style={S.cardIncome}>
               <div style={S.incomeLabel}>Total Income</div>
               <div style={S.incomeRow}>
                 <span style={S.incomeVal}>$245.00</span>
-                {/* mini bar chart */}
                 <div style={S.miniChart}>
-                  <div style={{ ...S.bar, height: 7,  background: '#CBD5E1' }} />
-                  <div style={{ ...S.bar, height: 14, background: '#54BD95' }} />
-                  <div style={{ ...S.bar, height: 9,  background: '#CBD5E1' }} />
+                  <div style={{ ...S.bar, height: 8,  background: '#DBE5FA' }} />
+                  <div style={{ ...S.bar, height: 16, background: '#54BD95' }} />
+                  <div style={{ ...S.bar, height: 10, background: '#DBE5FA' }} />
                 </div>
               </div>
             </div>
 
-            {/* Dark card: Creadlit Crad */}
+            {/* ── Credit Card: bottom-right, rotated ── */}
             <div style={S.creditCard}>
-              {/* Mastercard-style overlapping circles */}
+              <div style={S.ccDarkCircle} />
               <div style={S.ccCircles}>
-                <div style={{ ...S.ccCirc, background: '#EF4444' }} />
-                <div style={{ ...S.ccCirc, background: '#F59E0B', marginLeft: -8 }} />
+                <div style={{ ...S.ccCirc, background: 'rgba(180,180,180,0.7)' }} />
+                <div style={{ ...S.ccCirc, background: 'rgba(120,120,120,0.6)', marginLeft: -10 }} />
               </div>
-              <div style={S.ccName}>Creadlit Crad</div>
-              <div style={S.ccNum}>●●●● 1234</div>
+              <div style={S.ccName}>Creadit Crad</div>
+              <div style={S.ccNum}>• • • •  1234</div>
               <div style={S.ccExp}>09/25</div>
             </div>
 
-            {/* Orange chat bubble badge (bottom right of credit card area) */}
+            {/* ── Badge: Coral Chat (bottom-center) ── */}
             <div style={S.chatBadge}>
-              {/* chat bubble SVG */}
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="white">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="white">
                 <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
               </svg>
             </div>
@@ -146,191 +118,211 @@ export default function Hero({ onOpenDashboard, onOpenVideoModal }) {
 
 const S = {
   section: {
-    background: 'linear-gradient(135deg, #D0F4ED 0%, #E0FAFA 35%, #EEF8FB 70%, #F8FCFE 100%)',
-    padding: '52px 0 80px',
+    background: 'linear-gradient(180deg, #E5F6F0 0%, #E9F7F3 50%, #EEF9F5 100%)',
+    padding: '60px 0 80px',
+    position: 'relative',
+    overflow: 'visible',
   },
   grid: {
     display: 'grid',
-    gridTemplateColumns: '1fr 1fr',
-    gap: 48, alignItems: 'center',
+    gridTemplateColumns: '520px 1fr',
+    gap: 40, alignItems: 'center',
   },
   left: { maxWidth: 520 },
   h1: {
-    fontFamily: "'Plus Jakarta Sans', sans-serif",
-    fontSize: 56, fontWeight: 800,
-    color: '#192026', lineHeight: 1.12,
-    letterSpacing: '-1.5px', marginBottom: 24,
+    fontFamily: "'Inter', sans-serif",
+    fontSize: 66, fontWeight: 700,
+    color: '#191A15', lineHeight: '76px',
+    letterSpacing: '0%', marginBottom: 36,
   },
   highlight: {
     position: 'relative', display: 'inline-block',
-    paddingBottom: 8,
+    paddingBottom: 22,
   },
   underlineSvg: {
     position: 'absolute',
-    bottom: -2, left: 0,
-    width: '100%', height: 16,
+    bottom: -18, left: 0,
+    width: 479, height: 26,
     pointerEvents: 'none',
+    zIndex: 0,
   },
   sub: {
-    fontSize: 15, color: '#68717A',
-    lineHeight: 1.72, marginBottom: 36,
-    maxWidth: 440, fontWeight: 400,
-  },
-  btnRow: { display: 'flex', alignItems: 'center', gap: 28 },
-  btnTrial: {
-    backgroundColor: '#54BD95', color: '#fff',
     fontFamily: "'Inter', sans-serif",
-    fontWeight: 600, fontSize: 15,
-    padding: '14px 32px', borderRadius: 999,
+    fontSize: 18, fontWeight: 500,
+    color: '#000000', lineHeight: '30px',
+    letterSpacing: '0%', marginBottom: 36,
+    maxWidth: 461, opacity: 0.8,
+  },
+  btnRow: { display: 'flex', alignItems: 'center', gap: 24 },
+  btnTrial: {
+    backgroundColor: '#54BD95', color: '#FFFFFF',
+    fontFamily: "'Inter', sans-serif",
+    fontWeight: 500, fontSize: 16,
+    padding: '16px 34px',
+    borderRadius: 40,
     boxShadow: '0 8px 24px rgba(84,189,149,0.34)',
+    border: 'none', cursor: 'pointer',
+    letterSpacing: '0%',
   },
   btnDemo: {
     display: 'flex', alignItems: 'center', gap: 12,
-    background: 'none',
+    background: 'none', border: 'none', cursor: 'pointer',
+    height: 40, padding: 0,
   },
   playCircle: {
-    width: 42, height: 42,
+    width: 40, height: 40,
     borderRadius: '50%',
     border: '1.5px solid #C0C8D0',
     display: 'flex', alignItems: 'center', justifyContent: 'center',
-    background: '#fff',
+    background: '#FFFFFF',
     flexShrink: 0,
   },
   demoLabel: {
     fontFamily: "'Inter', sans-serif",
-    fontSize: 15, fontWeight: 600, color: '#192026',
+    fontSize: 16, fontWeight: 600, color: '#191A15',
+    letterSpacing: '0%',
   },
 
+  /* ── RIGHT GRAPHIC ── */
   right: { display: 'flex', justifyContent: 'flex-end', alignItems: 'center' },
+
   graphic: {
     position: 'relative',
-    width: 440, height: 500,
+    width: 620, height: 530,
   },
 
-  /* Green background rounded box */
   greenBox: {
     position: 'absolute',
-    top: 20, right: 0,
-    width: 290, height: 430,
-    background: '#54BD95',
-    borderRadius: 28,
-    overflow: 'hidden',
-    zIndex: 1,
-  },
-  waveSvg: {
-    position: 'absolute', inset: 0, width: '100%', height: '100%',
-  },
-
-  /* Person image */
-  personImg: {
-    position: 'absolute',
-    bottom: 0, right: 8,
-    width: 295, height: 445,
-    objectFit: 'cover',
+    top: 0, left: 140,
+    width: 410, height: 526,
+    backgroundImage: "url('/hero_person_bg.png')",
+    backgroundSize: 'cover',
+    backgroundPosition: 'center top',
     borderRadius: 24,
     zIndex: 2,
   },
 
-  /* Enter amount card (top-left) */
   cardAmount: {
     position: 'absolute',
-    top: 24, left: 0,
-    background: '#fff',
+    top: 14, left: 0,
+    background: '#FFFFFF',
     borderRadius: 14,
-    padding: '12px 16px',
-    boxShadow: '0 16px 40px rgba(0,0,0,0.10)',
-    zIndex: 4,
-    minWidth: 200,
+    padding: '12px 18px',
+    boxShadow: '0 8px 30px rgba(0,0,0,0.10)',
+    zIndex: 6,
+    width: 230,
   },
-  amtLabel: { fontSize: 10, color: '#A6A6A6', marginBottom: 6, fontWeight: 500 },
-  amtRow: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 14 },
+  amtLabel: {
+    fontSize: 11, color: '#A6A6A6',
+    marginBottom: 4, fontWeight: 500,
+    fontFamily: "'Inter', sans-serif",
+  },
+  amtRow: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10 },
   amtVal: {
-    fontFamily: "'Plus Jakarta Sans', sans-serif",
-    fontSize: 17, fontWeight: 800, color: '#192026',
+    fontFamily: "'Inter', sans-serif",
+    fontSize: 20, fontWeight: 700, color: '#191A15',
   },
   btnSend: {
-    background: '#54BD95', color: '#fff',
-    fontSize: 12, fontWeight: 700,
-    padding: '5px 14px', borderRadius: 999,
-    flexShrink: 0,
+    background: '#54BD95', color: '#FFFFFF',
+    fontFamily: "'Inter', sans-serif",
+    fontSize: 13, fontWeight: 700,
+    padding: '7px 18px', borderRadius: 40,
+    flexShrink: 0, border: 'none', cursor: 'pointer',
   },
 
-  /* Purple check badge */
   purpleCheck: {
     position: 'absolute',
-    top: 195, left: 95,
-    width: 32, height: 32,
-    borderRadius: 9,
-    background: '#5A55CA',
+    top: 175, left: 88,
+    width: 42, height: 42,
+    borderRadius: 12,
+    background: '#4535AF',
     display: 'flex', alignItems: 'center', justifyContent: 'center',
-    zIndex: 5,
-    boxShadow: '0 6px 18px rgba(90,85,202,0.4)',
+    zIndex: 6,
+    boxShadow: '0 6px 18px rgba(69,53,175,0.35)',
+    transform: 'rotate(-15deg)',
   },
 
-  /* Yellow icon (top right of green box) */
   yellowIcon: {
     position: 'absolute',
-    top: 20, right: -6,
-    width: 38, height: 38,
-    borderRadius: 10,
-    background: '#F59E0B',
+    top: 24, right: 36,
+    width: 46, height: 46,
+    borderRadius: 12,
+    background: '#FBC75E',
     display: 'flex', alignItems: 'center', justifyContent: 'center',
-    zIndex: 5,
-    boxShadow: '0 6px 16px rgba(245,158,11,0.38)',
-    transform: 'rotate(8deg)',
+    zIndex: 6,
+    boxShadow: '0 6px 18px rgba(251,199,94,0.35)',
+    transform: 'rotate(15deg)',
   },
 
-  /* Total Income card (bottom-left) */
   cardIncome: {
     position: 'absolute',
-    bottom: 80, left: -10,
-    background: '#fff',
+    bottom: 50, left: 60,
+    background: '#FFFFFF',
     borderRadius: 14,
-    padding: '12px 16px',
-    boxShadow: '0 16px 40px rgba(0,0,0,0.10)',
-    zIndex: 4,
-    minWidth: 170,
+    padding: '10px 16px',
+    boxShadow: '0 8px 30px rgba(0,0,0,0.10)',
+    zIndex: 6,
+    width: 175,
   },
-  incomeLabel: { fontSize: 10, color: '#A6A6A6', marginBottom: 4, fontWeight: 500 },
-  incomeRow: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10 },
+  incomeLabel: {
+    fontSize: 11, color: '#A6A6A6',
+    marginBottom: 4, fontWeight: 500,
+    fontFamily: "'Inter', sans-serif",
+  },
+  incomeRow: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 },
   incomeVal: {
-    fontFamily: "'Plus Jakarta Sans', sans-serif",
-    fontSize: 17, fontWeight: 800, color: '#192026',
+    fontFamily: "'Inter', sans-serif",
+    fontSize: 18, fontWeight: 700, color: '#191A15',
   },
   miniChart: { display: 'flex', alignItems: 'flex-end', gap: 3 },
   bar: { width: 4, borderRadius: 2 },
 
-  /* Credit card dark */
   creditCard: {
     position: 'absolute',
-    bottom: 52, right: -26,
-    width: 130, height: 130,
-    background: '#1C2530',
+    bottom: 30, right: 6,
+    width: 148, height: 175,
+    background: '#161C28',
     borderRadius: 16,
-    padding: '14px',
-    color: '#fff',
-    zIndex: 4,
-    boxShadow: '0 20px 44px rgba(0,0,0,0.35)',
-    transform: 'rotate(10deg)',
+    padding: '14px 16px',
+    color: '#FFFFFF',
+    zIndex: 5,
+    boxShadow: '0 14px 44px rgba(0,0,0,0.35)',
+    transform: 'rotate(14deg)',
     display: 'flex', flexDirection: 'column',
     justifyContent: 'space-between',
+    overflow: 'hidden',
   },
-  ccCircles: { display: 'flex' },
-  ccCirc: { width: 18, height: 18, borderRadius: '50%', opacity: 0.88 },
-  ccName: { fontSize: 9, color: '#94A3B8', fontWeight: 600, marginTop: 6 },
-  ccNum: { fontSize: 11, fontWeight: 700, letterSpacing: '0.5px' },
-  ccExp: { fontSize: 9, color: '#94A3B8', alignSelf: 'flex-end' },
+  ccDarkCircle: {
+    position: 'absolute',
+    top: -20, right: -20,
+    width: 88, height: 88,
+    borderRadius: '50%',
+    background: 'rgba(255,255,255,0.04)',
+  },
+  ccCircles: { display: 'flex', alignItems: 'center' },
+  ccCirc: { width: 20, height: 20, borderRadius: '50%' },
+  ccName: {
+    fontFamily: "'Inter', sans-serif",
+    fontSize: 10, color: '#F0F0EF', fontWeight: 500, marginTop: 4,
+  },
+  ccNum: {
+    fontFamily: "'Inter', sans-serif",
+    fontSize: 12, fontWeight: 700, letterSpacing: '1px', color: '#FFFFFF',
+  },
+  ccExp: {
+    fontFamily: "'Inter', sans-serif",
+    fontSize: 10, color: '#E6E6E6', alignSelf: 'flex-end',
+  },
 
-  /* Orange chat badge */
   chatBadge: {
     position: 'absolute',
-    bottom: 36, right: 72,
-    width: 32, height: 32,
-    borderRadius: 9,
-    background: '#F97316',
+    bottom: 2, right: 175,
+    width: 40, height: 40,
+    borderRadius: 12,
+    background: '#FFAA94',
     display: 'flex', alignItems: 'center', justifyContent: 'center',
-    zIndex: 5,
-    boxShadow: '0 6px 16px rgba(249,115,22,0.40)',
-    transform: 'rotate(-8deg)',
+    zIndex: 6,
+    boxShadow: '0 6px 18px rgba(255,170,148,0.40)',
+    transform: 'rotate(15deg)',
   },
 };

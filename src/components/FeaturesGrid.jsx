@@ -2,31 +2,39 @@ import React from 'react';
 import { Cloud, Briefcase } from 'lucide-react';
 
 export default function FeaturesGrid({ onOpenDashboard }) {
+  // Donut chart dimensions (scaled from spec 190px to fit card)
+  const R = 56;          // ring radius
+  const SW = 26;         // strokeWidth (proportional to spec 34px)
+  const C = 2 * Math.PI * R; // circumference ≈ 351.9
+  const seg = Math.floor(C / 4) - 3; // segment length minus gap = ~85
+  const gap = C - seg;  // remaining = ~267
+
   return (
-    <section id="features" style={S.section}>
+    <section id="features" className="section-white" style={S.section}>
       <div className="container">
 
-        {/* Header row */}
-        <div style={S.headerRow}>
+        {/* ── HEADER ROW ── */}
+        <div className="features-header-row" style={S.headerRow}>
           <div style={S.headerLeft}>
-            <h2 style={S.h2}>Our Features<br />you can get</h2>
+            <h2 className="section-title" style={S.h2}>Our Features<br />you cab get</h2>
+          </div>
+          <div style={S.headerCenter}>
+            <p style={S.sub}>
+              We offer a variety of interesting features that you can help increase yor productivity at work and manage your projrct esaly
+            </p>
           </div>
           <div style={S.headerRight}>
-            <p style={S.sub}>
-              We offer a variety of interesting features that you can help increase your
-              productivity at work and manage your project easily
-            </p>
             <button onClick={onOpenDashboard} style={S.btnGet}>Get Started</button>
           </div>
         </div>
 
-        {/* 3-column grid */}
-        <div style={S.grid}>
+        {/* ── 3-COLUMN CARDS ── */}
+        <div className="features-grid" style={S.grid}>
 
           {/* ── CARD 1: Collaboration Teams ── */}
           <div style={S.card}>
             <div style={S.visual}>
-              {/* Row 1: green block + arrow + lines */}
+              {/* Row 1: green block + circle-arrow + skeleton lines */}
               <div style={V.row}>
                 <div style={V.greenBlock} />
                 <div style={V.arrowGroup}>
@@ -39,7 +47,7 @@ export default function FeaturesGrid({ onOpenDashboard }) {
                 </div>
               </div>
 
-              {/* Row 2: blue block + lines */}
+              {/* Row 2: blue block + skeleton lines */}
               <div style={V.row}>
                 <div style={V.blueBlock} />
                 <div style={V.linesCol}>
@@ -49,115 +57,115 @@ export default function FeaturesGrid({ onOpenDashboard }) {
                 </div>
               </div>
 
-              {/* Row 3: 3 circles */}
+              {/* Row 3: 3 avatar circles */}
               <div style={V.circleRow}>
-                <div style={{ ...V.circ, background: '#E2E8F0' }} />
-                <div style={{ ...V.circ, background: '#0085FF' }} />
-                <div style={{ ...V.circ, background: '#54BD95', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <span style={{ color: '#fff', fontSize: 11, fontWeight: 800 }}>•••</span>
+                <div style={{ ...V.circ, background: '#E9EFFC' }} />
+                <div style={{ ...V.circ, background: '#0F8CE9' }} />
+                <div style={{
+                  ...V.circ, background: '#54BD95',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                }}>
+                  <span style={{ color: '#fff', fontSize: 13, fontWeight: 900, letterSpacing: '-1px' }}>•••</span>
                 </div>
               </div>
             </div>
-            <h3 style={S.cardTitle}>Collaboration Teams</h3>
+            <h3 style={S.cardTitle}>Collboration Teams</h3>
             <p style={S.cardDesc}>Here you can handle projects together with team virtually</p>
           </div>
 
           {/* ── CARD 2: Cloud Storage ── */}
           <div style={S.card}>
             <div style={S.visual}>
-              {/* White cloud badge top right */}
+              {/* White cloud badge — top-right */}
               <div style={V.cloudBadge}>
-                <Cloud size={13} color="#54BD95" />
+                <Cloud size={16} color="#54BD95" />
               </div>
 
-              {/* Centered green document card */}
+              {/* Blue vertical accent bar */}
+              <div style={V.blueAccentBar} />
+
+              {/* Green document card — left-center */}
               <div style={V.docCard}>
                 <div style={V.docYellow}>
-                  {/* document lines icon */}
-                  <div style={V.docYellowLine} />
-                  <div style={{ ...V.docYellowLine, width: 8 }} />
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <rect x="1" y="7" width="3.5" height="8" rx="1.5" fill="white"/>
+                    <rect x="6.25" y="4" width="3.5" height="11" rx="1.5" fill="white"/>
+                    <rect x="11.5" y="1" width="3.5" height="14" rx="1.5" fill="white"/>
+                  </svg>
                 </div>
                 <div style={V.docTitle}>Document File</div>
-                <div style={V.docSub}>456 GB | 1056 Items</div>
+                <div style={V.docSub}>456 GB I 1056 Items</div>
               </div>
 
-              {/* 5 green vertical bars bottom */}
+              {/* Green vertical bars — bottom */}
               <div style={V.barsWrap}>
-                {[22, 34, 18, 40, 26].map((h, i) => (
+                {[22, 36, 18, 44, 28, 34].map((h, i) => (
                   <div key={i} style={{ ...V.vBar, height: h }} />
                 ))}
               </div>
             </div>
             <h3 style={S.cardTitle}>Cloud Storage</h3>
-            <p style={S.cardDesc}>No need to worry about storage because we provide storage up to 2 TB</p>
+            <p style={S.cardDesc}>No nedd to worry about storage because we provide storage up to 2 TB</p>
           </div>
 
           {/* ── CARD 3: Daily Analytics ── */}
           <div style={S.card}>
             <div style={S.visual}>
               <div style={V.analyticsWrap}>
-                {/* Gauge / donut top */}
-                <div style={V.gaugeOuter}>
-                  {/* Blue left half */}
-                  <div style={V.gaugeSemicircle}>
-                    <svg viewBox="0 0 120 60" width="120" height="60">
-                      <path
-                        d="M 6 60 A 54 54 0 0 1 114 60"
-                        fill="none"
-                        stroke="#E5E7EB"
-                        strokeWidth="12"
-                        strokeLinecap="round"
-                      />
-                      <path
-                        d="M 6 60 A 54 54 0 0 1 114 60"
-                        fill="none"
-                        stroke="#0085FF"
-                        strokeWidth="12"
-                        strokeLinecap="round"
-                        strokeDasharray="110 170"
-                      />
-                      <path
-                        d="M 6 60 A 54 54 0 0 1 114 60"
-                        fill="none"
-                        stroke="#F59E0B"
-                        strokeWidth="12"
-                        strokeLinecap="round"
-                        strokeDasharray="60 220"
-                        strokeDashoffset="-110"
-                      />
-                    </svg>
-                    {/* center dot */}
-                    <div style={V.gaugeDot} />
-                  </div>
+
+                {/* 4-segment donut chart */}
+                <div style={V.donutWrap}>
+                  <svg width="140" height="140" viewBox="0 0 140 140">
+                    <g transform="rotate(-90 70 70)">
+                      {/* Background track */}
+                      <circle cx="70" cy="70" r={R} fill="none" stroke="#E7ECF3" strokeWidth={SW} />
+                      {/* Segment 1 — Purple */}
+                      <circle cx="70" cy="70" r={R} fill="none" stroke="#52459F" strokeWidth={SW}
+                        strokeDasharray={`${seg} ${gap}`} strokeDashoffset={0} strokeLinecap="butt" />
+                      {/* Segment 2 — Blue */}
+                      <circle cx="70" cy="70" r={R} fill="none" stroke="#0F8CE9" strokeWidth={SW}
+                        strokeDasharray={`${seg} ${gap}`} strokeDashoffset={-(seg + 3)} strokeLinecap="butt" />
+                      {/* Segment 3 — Green */}
+                      <circle cx="70" cy="70" r={R} fill="none" stroke="#54BD95" strokeWidth={SW}
+                        strokeDasharray={`${seg} ${gap}`} strokeDashoffset={-(seg + 3) * 2} strokeLinecap="butt" />
+                      {/* Segment 4 — Yellow */}
+                      <circle cx="70" cy="70" r={R} fill="none" stroke="#FEE900" strokeWidth={SW}
+                        strokeDasharray={`${seg} ${gap}`} strokeDashoffset={-(seg + 3) * 3} strokeLinecap="butt" />
+                    </g>
+                    {/* Center fill circles */}
+                    <circle cx="70" cy="70" r="37" fill="#FEFEFD" />
+                    <circle cx="70" cy="70" r="27" fill="#E6F9FD" />
+                  </svg>
                   <div style={V.gaugeLabels}>
                     <span style={V.gaugeLabel}>60%</span>
                     <span style={V.gaugeLabel}>40%</span>
                   </div>
                 </div>
 
-                {/* Blue progress row */}
+                {/* Cloud progress row */}
                 <div style={V.progRow}>
-                  <div style={{ ...V.progIcon, background: '#0085FF' }}>
-                    <Cloud size={10} color="#fff" />
+                  <div style={{ ...V.progIcon, background: '#0F8CE9' }}>
+                    <Cloud size={11} color="#fff" />
                   </div>
                   <div style={V.track}>
                     <div style={{ ...V.fill, width: '45%' }} />
                   </div>
                 </div>
 
-                {/* Green progress row */}
+                {/* Briefcase progress row */}
                 <div style={V.progRow}>
-                  <div style={{ ...V.progIcon, background: '#54BD95' }}>
-                    <Briefcase size={10} color="#fff" />
+                  <div style={{ ...V.progIcon, background: '#EBF7F4' }}>
+                    <Briefcase size={11} color="#54BD95" />
                   </div>
                   <div style={V.track}>
-                    <div style={{ ...V.fill, width: '75%' }} />
+                    <div style={{ ...V.fill, width: '70%' }} />
                   </div>
                 </div>
+
               </div>
             </div>
             <h3 style={S.cardTitle}>Daily Analytics</h3>
-            <p style={S.cardDesc}>We always provide useful Informatin to make it easier for you every day</p>
+            <p style={S.cardDesc}>We always provide useful informatin to make it easier for you every day</p>
           </div>
 
         </div>
@@ -166,131 +174,192 @@ export default function FeaturesGrid({ onOpenDashboard }) {
   );
 }
 
+/* ── SECTION & LAYOUT STYLES ── */
 const S = {
-  section: { padding: '80px 0', background: '#F8FBFA' },
+  section: {
+    padding: '80px 0 96px',
+    background: 'linear-gradient(90deg, #FFF5F5 0%, #FFFFFF 50%, #E8F7F2 100%)',
+  },
+
   headerRow: {
-    display: 'flex', justifyContent: 'space-between',
-    alignItems: 'flex-start', marginBottom: 52,
-    flexWrap: 'wrap', gap: 24,
+    display: 'flex', alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 56, gap: 32,
   },
-  headerLeft: { flex: 1, minWidth: 240 },
+  headerLeft: { flex: '0 0 auto' },
   h2: {
-    fontFamily: "'Plus Jakarta Sans', sans-serif",
-    fontSize: 38, fontWeight: 800, color: '#192026', lineHeight: 1.2,
+    fontFamily: "'Inter', sans-serif",
+    fontSize: 50, fontWeight: 600,
+    color: '#191A15', lineHeight: 1.2,
+    letterSpacing: 0, margin: 0,
   },
-  headerRight: {
-    flex: 1, minWidth: 300, maxWidth: 500,
-    display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 20,
+  headerCenter: { flex: 1, maxWidth: 360 },
+  sub: {
+    fontFamily: "'Inter', sans-serif",
+    fontSize: 18, fontWeight: 500,
+    color: '#A6A6A6', lineHeight: '30px',
+    letterSpacing: 0, margin: 0,
   },
-  sub: { fontSize: 14, color: '#A6A6A6', lineHeight: 1.76 },
+  headerRight: { flex: '0 0 auto' },
   btnGet: {
-    background: '#54BD95', color: '#fff',
-    fontWeight: 700, fontSize: 14,
-    padding: '12px 28px', borderRadius: 999,
-    boxShadow: '0 6px 18px rgba(84,189,149,0.30)',
+    background: '#54BD95', color: '#FFFFFF',
+    fontFamily: "'Inter', sans-serif",
+    fontWeight: 500, fontSize: 18,
+    lineHeight: '30px', letterSpacing: 0,
+    width: 162, height: 66,
+    display: 'flex', alignItems: 'center', justifyContent: 'center',
+    borderRadius: 70,
+    border: 'none', cursor: 'pointer',
+    flexShrink: 0,
   },
+
   grid: {
-    display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)',
-    gap: 26,
+    display: 'grid',
+    gridTemplateColumns: 'repeat(3, 1fr)',
+    gap: 44,
   },
   card: {
-    background: '#fff', border: '1px solid #EAEFF4',
-    borderRadius: 20, padding: '20px',
-    display: 'flex', flexDirection: 'column', gap: 14,
-    boxShadow: '0 2px 12px rgba(0,0,0,0.03)',
-  },
-  visual: {
-    width: '100%', height: 205,
-    background: '#F0F4F8',
-    borderRadius: 14,
     display: 'flex', flexDirection: 'column',
-    alignItems: 'center', justifyContent: 'center',
-    padding: '18px 16px', position: 'relative', overflow: 'hidden',
-    gap: 12,
   },
+
+  /* Card illustration box */
+  visual: {
+    width: '100%', height: 300,
+    background: '#F9F8FE',
+    borderRadius: 20,
+    display: 'flex', flexDirection: 'column',
+    alignItems: 'flex-start', justifyContent: 'center',
+    padding: '20px 22px',
+    position: 'relative', overflow: 'hidden',
+    gap: 14, boxSizing: 'border-box',
+  },
+
+  /* Title below illustration */
   cardTitle: {
-    fontFamily: "'Plus Jakarta Sans', sans-serif",
-    fontSize: 18, fontWeight: 800, color: '#192026',
+    fontFamily: "'Inter', sans-serif",
+    fontSize: 30, fontWeight: 600,
+    color: '#191A15', lineHeight: '30px',
+    letterSpacing: 0,
+    marginTop: 30, marginBottom: 0,
   },
-  cardDesc: { fontSize: 13, color: '#A6A6A6', lineHeight: 1.65 },
+
+  /* Description below title */
+  cardDesc: {
+    fontFamily: "'Inter', sans-serif",
+    fontSize: 18, fontWeight: 500,
+    color: '#A6A6A6', lineHeight: '30px',
+    letterSpacing: 0,
+    marginTop: 12, marginBottom: 0,
+  },
 };
 
+/* ── VISUAL / ILLUSTRATION ELEMENT STYLES ── */
 const V = {
-  /* Collab card */
+
+  /* ─ Collaboration card ─ */
   row: { display: 'flex', alignItems: 'center', gap: 10, width: '100%' },
-  greenBlock: { width: 32, height: 38, background: '#54BD95', borderRadius: 7, flexShrink: 0 },
-  blueBlock:  { width: 32, height: 32, background: '#0085FF', borderRadius: 7, flexShrink: 0 },
-  arrowGroup: { display: 'flex', alignItems: 'center', gap: 4 },
-  greenCircle: { width: 20, height: 20, borderRadius: '50%', background: '#54BD95' },
+  greenBlock: {
+    width: 30, height: 40,
+    background: '#54BD95', borderRadius: 7, flexShrink: 0,
+  },
+  blueBlock: {
+    width: 30, height: 32,
+    background: '#0F8CE9', borderRadius: 7, flexShrink: 0,
+  },
+  arrowGroup: { display: 'flex', alignItems: 'center', gap: 3 },
+  greenCircle: { width: 18, height: 18, borderRadius: '50%', background: '#54BD95' },
   arrowHead: {
     width: 0, height: 0,
     borderTop: '5px solid transparent',
     borderBottom: '5px solid transparent',
-    borderLeft: '8px solid #54BD95',
+    borderLeft: '9px solid #54BD95',
   },
   linesCol: { flex: 1, display: 'flex', flexDirection: 'column', gap: 5 },
-  line: { width: '100%', height: 5, background: '#C8D8CC', borderRadius: 3 },
-  circleRow: { display: 'flex', gap: 12, marginTop: 2 },
-  circ: { width: 34, height: 34, borderRadius: '50%' },
+  line: { width: '100%', height: 7, background: '#DBE5FA', borderRadius: 4 },
+  circleRow: { display: 'flex', gap: 10, marginTop: 4 },
+  circ: { width: 36, height: 36, borderRadius: '50%' },
 
-  /* Storage card */
+  /* ─ Cloud Storage card ─ */
   cloudBadge: {
-    position: 'absolute', top: 8, right: 8,
-    background: '#fff', padding: '5px 9px',
-    borderRadius: 8, boxShadow: '0 3px 9px rgba(0,0,0,0.07)',
+    position: 'absolute', top: 14, right: 14,
+    background: '#FFFFFF', padding: '6px 10px',
+    borderRadius: 10,
+    boxShadow: '0 4px 9px rgba(0,0,0,0.08)',
+    display: 'flex', alignItems: 'center',
+  },
+  blueAccentBar: {
+    position: 'absolute', right: 50, top: 36, bottom: 36,
+    width: 10, background: '#0F8CE9', borderRadius: 6,
+    zIndex: 1,
   },
   docCard: {
-    background: '#54BD95', color: '#fff',
+    background: '#5FC09B', color: '#FFFFFF',
     borderRadius: 14, padding: '14px 16px',
-    display: 'flex', flexDirection: 'column', alignItems: 'center',
-    textAlign: 'center', width: 148,
-    boxShadow: '0 10px 28px rgba(84,189,149,0.35)',
-    zIndex: 2,
+    display: 'flex', flexDirection: 'column', alignItems: 'flex-start',
+    width: 175, zIndex: 2,
+    boxShadow: '0 14px 44px rgba(0,0,0,0.12)',
   },
   docYellow: {
-    width: 26, height: 26, background: '#F59E0B',
-    borderRadius: 7,
-    display: 'flex', flexDirection: 'column',
-    alignItems: 'center', justifyContent: 'center', gap: 3,
-    marginBottom: 7,
-  },
-  docYellowLine: { width: 12, height: 2, background: '#fff', borderRadius: 1 },
-  docTitle: { fontSize: 13, fontWeight: 700 },
-  docSub: { fontSize: 10, opacity: 0.88, marginTop: 2 },
-  barsWrap: {
-    position: 'absolute', bottom: 10, right: 14,
-    display: 'flex', alignItems: 'flex-end', gap: 7,
-  },
-  vBar: { width: 7, background: '#54BD95', borderRadius: 3 },
-
-  /* Analytics card */
-  analyticsWrap: {
-    width: '100%', display: 'flex', flexDirection: 'column',
-    alignItems: 'center', gap: 10,
-  },
-  gaugeOuter: { width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' },
-  gaugeSemicircle: { position: 'relative', display: 'flex', justifyContent: 'center' },
-  gaugeDot: {
-    position: 'absolute', bottom: -8, left: '50%',
-    transform: 'translateX(-50%)',
-    width: 22, height: 22, borderRadius: '50%',
-    background: '#0085FF',
+    width: 34, height: 34, background: '#FEE900',
+    borderRadius: 9,
     display: 'flex', alignItems: 'center', justifyContent: 'center',
-    color: '#fff', fontSize: 9, fontWeight: 800,
+    marginBottom: 8,
+    boxShadow: '0 4px 9px rgba(0,0,0,0.10)',
   },
-  gaugeLabels: { display: 'flex', justifyContent: 'space-between', width: 120, marginTop: 4 },
-  gaugeLabel: { fontSize: 10, fontWeight: 700, color: '#64748B' },
+  docTitle: {
+    fontFamily: "'Inter', sans-serif",
+    fontSize: 20, fontWeight: 500,
+    color: '#FFFFFF', lineHeight: 1.3, letterSpacing: 0,
+  },
+  docSub: {
+    fontFamily: "'Inter', sans-serif",
+    fontSize: 13, fontWeight: 500,
+    color: 'rgba(255,255,255,0.88)',
+    marginTop: 3, letterSpacing: 0,
+  },
+  barsWrap: {
+    position: 'absolute', bottom: 14,
+    left: 22, right: 22,
+    display: 'flex', alignItems: 'flex-end',
+    gap: 8, justifyContent: 'center',
+  },
+  vBar: { width: 9, background: '#54BD95', borderRadius: 4 },
+
+  /* ─ Daily Analytics card ─ */
+  analyticsWrap: {
+    width: '100%',
+    display: 'flex', flexDirection: 'column',
+    alignItems: 'center', gap: 8,
+  },
+  donutWrap: {
+    display: 'flex', flexDirection: 'column', alignItems: 'center',
+  },
+  gaugeLabels: {
+    display: 'flex', justifyContent: 'space-between',
+    width: 120, marginTop: 4,
+  },
+  gaugeLabel: {
+    fontFamily: "'Inter', sans-serif",
+    fontSize: 14, fontWeight: 500,
+    color: '#000000', letterSpacing: 0,
+  },
   progRow: {
-    width: '100%', background: '#fff',
-    padding: '7px 10px', borderRadius: 8,
-    display: 'flex', alignItems: 'center', gap: 9,
-    boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
+    width: '100%', background: '#FFFFFF',
+    padding: '7px 10px', borderRadius: 10,
+    display: 'flex', alignItems: 'center', gap: 10,
+    boxShadow: '0 4px 9px rgba(0,0,0,0.05)',
   },
   progIcon: {
-    width: 22, height: 22, borderRadius: 6,
+    width: 26, height: 26, borderRadius: 7,
     display: 'flex', alignItems: 'center', justifyContent: 'center',
     flexShrink: 0,
+    boxShadow: '0 4px 9px rgba(0,0,0,0.08)',
   },
-  track: { flex: 1, height: 4, background: '#E5E7EB', borderRadius: 4, overflow: 'hidden' },
-  fill: { height: '100%', background: '#54BD95', borderRadius: 4 },
+  track: {
+    flex: 1, height: 5,
+    background: '#DBE5FA', borderRadius: 4, overflow: 'hidden',
+  },
+  fill: {
+    height: '100%', background: '#54BD95', borderRadius: 4,
+  },
 };
